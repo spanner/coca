@@ -13,7 +13,7 @@ module Coca
     end
     
     def host
-      @host ||= localhost
+      @host ||= "localhost"
     end
     
     def port

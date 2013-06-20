@@ -1,6 +1,8 @@
 # Coca
 
-Coca stands for **Chain of Command Authentication**. We thought about just calling it 'delegated devise'. It's a lightweight authentication-delegation scheme that makes SSO very easy to add to a devise-based rails app. It works through an ordinary JSON API so you can pass any user data you like down the chain after authentication succeeds.
+Coca stands for **Chain of Command Authentication**. It's a lightweight authentication-delegation scheme that makes SSO very easy to add to a devise-based rails app. It works through an ordinary JSON API so you can pass any user data you like down the chain after authentication succeeds.
+
+We thought about calling it 'delegated devise' because in the present implementation it's just a devise strategy that can delegate to another application and an API for receiving delegated auth calls. In future we'd like to extend the principle more widely so we gave it a more general name.
 
 Coca is highly configurable but the defaults are simple and secure. It is designed to be part of a service-based architecture, where it will bind together a set of applications around a shared authentication service.
 
@@ -8,9 +10,8 @@ Coca is naturally extensible because you can send any information you like down 
 
 Coca also supports attribute propagation: your auth master is likely also to be a directory server and coca can automatically send notifications up and down the chain when attributes change. This allows you to offer a profile form on any application in the chain but hold the profile columns on only one (presumably but not necessarily the master).
 
-In theory this is a protocol that could be implemented in many ways. So far the only implementation that exists is a devise strategy.
 
-## TLDR
+## tl;dr
 
     class User < ActiveRecord::Base
       devise :cocable
@@ -18,22 +19,22 @@ In theory this is a protocol that could be implemented in many ways. So far the 
     
     # and in an initialiser:
     
-    Coca.look_up do |config|
-      config.host = localhost
-      config.port = 8088
-      config.secret = "key"
+    Coca.delegate_to do |master|
+      master.host = localhost
+      master.port = 8088
+      master.secret = "key"
     end
 
 
 ## Compared to OAuth
 
-* This is not an authorization service. There is no mechanism for issuing API tokens or granting access to individual resources. The chain of command is defined on initialisation and all requests and responses have to come from sources that are already trusted. OAuth makes it possible to have ad-hoc relationships between strangers. Coca is a conversation among friends.
+* **This is not an authorization service.** There is no mechanism for issuing API tokens or granting access to individual resources. The chain of command is defined on initialisation and all requests and responses have to come from sources that are already trusted. OAuth makes it possible to have ad-hoc relationships between strangers. Coca is a conversation among friends.
 
-* OAuth is a user-pull scheme that bounces off the browser a few times and requires you to pass callbacks between servers. The user sees confirmation dialogs from different providers or is forced to visit services in a certain order. Coca works by server-pull, invisible to the user and no more difficult than just logging in. It doesn't matter where you arrive: once you've logged in, you're in.
+* **OAuth is a user-pull scheme** that bounces off the browser a few times and requires it to pass callbacks between servers. The user sees confirmation dialogs from different providers or is forced to visit services in a certain order. Coca works by server-pull, invisible to the user and no more difficult than just logging in. It doesn't matter where you arrive: once you've logged in, you're in.
 
-* Oauth works across domains. Coca mostly doesn't: you can authenticate against a master at any address, but SSO is limited to domains that can share a cookie. In practice that means coca only provides SSO across related subdomains.
+* **Oauth works across domains.** Coca mostly doesn't: you can authenticate against a master at any address, but SSO is limited to domains that can share a cookie. In practice that means coca only provides SSO across related subdomains.
 
-* OAuth is horrible to work with, absurdly complicated and a daft way to implement SSO unless you are piggybacking on a remote service. Coca is quite nice.
+* **OAuth is horrible to work with,** absurdly complicated and a daft way to implement SSO unless you are also piggybacking on a remote service. Coca is quite nice.
 
 
 ## Compared to XAuth
@@ -63,7 +64,9 @@ There's nothing to stop you running coca in parallel with other auth services in
 
 ## How it works
 
-All the actual authentication done by devise as usual. Coca just adds a simple way to pass it up and down a chain of applications.
+All the actual authentication done by devise as usual. Coca just adds a simple way to pass credentials up the chain and an auth token back down again.
+
+#todo: perhaps the auth token is overcomplicated. it could just be an equivaltnt to the session cookie that we pass back.
 
 1. A coca servant app has its own (typically devise-based) sign-in mechanism. You can set that up any way you like, and you can choose to accept credentials locally for some users.
 
@@ -95,16 +98,16 @@ Each application can be master, servant or both. Configuration is usually in con
 
     # To act as a servant:
 
-    Coca.look_up do |master|
-      master.host = fq.domain.com or localhost
+    Coca.delegate_to do |master|
+      master.host = fq.domain.com or ip address or localhost
       master.port = optional unless localhost
       master.secret = "key"
     end
     
     # To act as a master:
     
-    Coca.look_down do |servant|
-      servant.host = fq.domain.com
+    Coca.delegate_from do |servant|
+      servant.host = fq.domain.com or ip address or localhost
       servant.secret = "key"
       servant.ttl = 3600
     end
