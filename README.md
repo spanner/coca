@@ -1,6 +1,6 @@
 # Coca
 
-Coca stands for **Chain of Command Authentication**. It's a lightweight authentication-delegation scheme that makes SSO trivially easy to add to a devise-based rails app. It works through an ordinary JSON API so you can pass any user data you like down the chain after authentication succeeds.
+Coca stands for **Chain of Command Authentication**. We thought about just calling it 'delegated devise'. It's a lightweight authentication-delegation scheme that makes SSO very easy to add to a devise-based rails app. It works through an ordinary JSON API so you can pass any user data you like down the chain after authentication succeeds.
 
 Coca is highly configurable but the defaults are simple and secure. It is designed to be part of a service-based architecture, where it will bind together a set of applications around a shared authentication service.
 
@@ -8,12 +8,20 @@ Coca is naturally extensible because you can send any information you like down 
 
 Coca also supports attribute propagation: your auth master is likely also to be a directory server and coca can automatically send notifications up and down the chain when attributes change. This allows you to offer a profile form on any application in the chain but hold the profile columns on only one (presumably but not necessarily the master).
 
+In theory this is a protocol that could be implemented in many ways. So far the only implementation that exists is a devise strategy.
 
 ## TLDR
 
     class User < ActiveRecord::Base
       devise :cocable
-      attributes_delegated :name, :email, :phone, :image
+    end
+    
+    # and in an initialiser:
+    
+    Coca.look_up do |config|
+      config.host = localhost
+      config.port = 8088
+      config.secret = "key"
     end
 
 
@@ -42,38 +50,43 @@ If you don't already have an LDAP server with its own availability regime and a 
 
 ## Use coca if
 
-* You want to implement single sign-on within a cluster of trusted applications that all live within a single domain;
+* You want to implement single sign-on within a cluster of trusted applications that all live in a single domain;
 
-* You want an easy way to pass around RBAC or other extended user information;
+* You want an easy way to pass around permissions or other extended user information;
 
-* You want your authentication service to be part of your usual rails cluster and benefit from its existing availability and backup systems;
+* You want your authentication service to be part of your usual rails cluster and benefit from its existing availability and backup measures;
 
 * You're not planning to offer a remote login-with-me service to applications as yet unknown.
+
+There's nothing to stop you running coca in parallel with other auth services including OAuth, SAML or even LDAP.
 
 
 ## How it works
 
-A coca servant app has its own (typically devise-based) sign-in mechanism. You can set that up any way you like, and you can choose to accept credentials locally for some users.
+All the actual authentication done by devise as usual. Coca just adds a simple way to pass it up and down a chain of applications.
 
-If the app is presented with an auth token or login pair that it doesn't recognise, those credentials are passed up to the configured master application as a JSON request that includes a predefined API key.
+1. A coca servant app has its own (typically devise-based) sign-in mechanism. You can set that up any way you like, and you can choose to accept credentials locally for some users.
 
-The master will check that the requesting host and the secret key match before it gives any response.
+2. If the app is presented with an auth token or login pair that it doesn't recognise, those credentials are passed up to the configured master application as a JSON request that includes a predefined API key. 
 
-If the master application accepts the auth token or the username and password, it will return 200 and a package of user information. 
+3. The master will check that the requesting host and the secret key match before it gives any response.
 
-If the app doesn't recognise the credentials, it can pass them on to its own coca master. If there isn't one, or that request fails too, it will return 403 and no data. If it does receive approval from further up the chain, it is passed on down.
+4. If the master application accepts the auth token or the username and password, it will return 200 and a package of user information. If the app doesn't recognise the credentials, it can pass them on to its own coca master. If there isn't one, or that request fails too, it will return 403 and no data. If it does receive approval from further up the chain, it is passed on down.
 
-As the confirmation package travels down the chain each servant app stores the auth token and does what it likes with any other data that is returned.
+5. As the confirmation package travels down the chain each servant app stores the auth token and does what it likes with any other data that is returned.
 
-Subsequent requests that present a valid auth token will be successful at the bottom of the chain.
+6. Subsequent requests that present a valid auth token will be successful at the bottom of the chain.
 
-The master will include in the confirmation package a configurable TTL for the auth token. You can use this to set a balance between revokability and responsiveness. Set it to zero for maximum control or to a sensible session length like 30 minutes to minimise the coca overhead.
+7. The master will include in the confirmation package a configurable TTL for the auth token. You can use this to set a balance between revokability and responsiveness. Set it to zero for maximum control or to a sensible session length like 30 minutes to minimise the coca overhead.
 
-The original servant app receives the confirmation package, saves the authentication token and does whatever it does with the other data. It also puts the auth token in a domain cookie (not the usual session cookie) that will be picked up by any other application in the same domain.
+8. The original servant app receives the confirmation package, saves the authentication token and does whatever it does with the other data. It also puts the auth token in a domain cookie (not the usual session cookie) that will be picked up by any other application in the same domain.
 
-When the same browser visits another application in the same domain, it presents the auth token cookie. The second servant app passes that token up the chain to the same master. Having issued the token, the master accepts it and returns the same confirmation package as before. The second servant stores the auth token locally so that it too can accept subsequent requests without delegation.
+9. When the same browser visits another application in the same domain, it presents the master's auth token cookie. The second servant app passes that token up the chain to the same master. Having issued the token, the master accepts it and returns the same confirmation package as before. The second servant stores the auth token locally so that it too can accept subsequent requests without delegation, token expiry permitting.
+
 
 ## Usage
+
+Each link in the chain of command is defined as a server to which we defer  and/or a set of servers from which we accept requests. Within that link you also have to declare that a particular model should take part in the authentication scheme.
 
 
 ### Configuring the chain
@@ -82,23 +95,24 @@ Each application can be master, servant or both. Configuration is usually in con
 
     # To act as a servant:
 
-    Coca.look_up do |config|
-      config.host = fq.domain.com or localhost
-      config.port = optional unless localhost
-      config.secret = "key"
+    Coca.look_up do |master|
+      master.host = fq.domain.com or localhost
+      master.port = optional unless localhost
+      master.secret = "key"
     end
     
     # To act as a master:
     
-    Coca.look_down do |config|
-      config.host = fq.domain.com
-      config.secret = "key"
-      config.ttl = 3600
+    Coca.look_down do |servant|
+      servant.host = fq.domain.com
+      servant.secret = "key"
+      servant.ttl = 3600
     end
     
 You can have any number of links up and down. More than one look_up is unlikely and inefficient, but possible.
     
-    # Other configuration
+    # TTL can be set globally
+    Coca.token_ttl = 86400
     
     # disable to not broadcast user changes or ignore incoming updates
     Coca.propagate_updates = true
@@ -109,8 +123,11 @@ You can have any number of links up and down. More than one look_up is unlikely 
     # disable to omit reverse IP check on incoming requests and updates
     Coca.check_source = true
 
+    # you may want to set this per environment
+    Coca.cookie_domain = '.spanner.org'
 
-### Delegating in the servant
+
+### Delegating in a model
 
 To start with coca is implemented as a devise strategy. Minimally:
 
@@ -118,24 +135,12 @@ To start with coca is implemented as a devise strategy. Minimally:
       devise :cocable
     end
 
-Declaring the class `:cocable` will cause both email/password combinations and authentication tokens to be passed up the chain when they are submitted here. This can be combined with other strategies:
-
-    class User < ActiveRecord::Base
-      devise :database_authenticatable,
-             :token_authenticatable,
-             :cocable
-    end
-
-In this case credentials will only be passed up the chain as a last resort after local matches have failed.
-
-Note that the `:cocable` strategy will always try to match on an auth_token even if you don't also declare the model `:token_authenticatable`.
-
-In all these cases it is assumed that the upstream resources have the same names as here. This allows us to support parallel authentication streams, for people who don't like things to be easy.
+The `:cocable` strategy will try token authentication and database authentication before it delegates to a master, so you don't need to declare those but you do have to support them in the database.
 
 
 ### Authenticating in the master
 
-The syntax is the same, but here it matters which other strategies you apply because it is up to devise to authenticate against the supplied credentials.
+The syntax is the same as delegation, since we may also be passing auth up the chain. Here it matters which other strategies you apply because it is up to devise to authenticate against the supplied credentials. They would normally include at least database_authenticatable and token_authenticatable.
 
     class User < ActiveRecord::Base
       devise :database_authenticatable,
@@ -146,19 +151,18 @@ The syntax is the same, but here it matters which other strategies you apply bec
 
 ### Routing in the master
 
-If your user class is called user, you can just mount the Coca Engine at /coca and the routes are set up for you.
+<!-- If your user class is called User, you can just mount Coca at /coca and the routes are set up for you.
 
     mount Coca::Engine => "/coca", :as => :coca
 
-To handle other resource names you need to add some routes to the coca namespace. More on that if it ever seems like a good idea.
-
+To handle other resource names you need to add some routes to the coca namespace. More documentation will follow if it ever seems like a good idea. -->
 
 
 ### Migrations
 
-In the servant cocable only requires an `authentication_token` column that you may already have. All the other devise columns can be omitted unless you are supporting other strategies locally.
+In the servant coca requires an `authentication_token` column that you may already have. All the other devise columns can be omitted unless you are supporting other strategies locally.
 
-In the master you only need the columns to support the strategies you offer. They should include `:token_authenticatable` and `:database_authenticatable`, but cocable requires no extra columns of its own.
+In the master coca has no special requirements but you still need the columns that support the strategies you offer. 
 
 
 ## Extending Coca
@@ -168,9 +172,16 @@ At heart coca is a simple remote authentication service: credentials are checked
 The data package that we return on successful auth is built by calling `as_json_on_authentication` on the user model in the coca master. By default it just returns uid and auth token, but you can override that method to return any data you like. Permissions, friends lists, recent messages, password replacement instructions: anything it makes sense to centralise can be held in the master and passed down to all the servant applications.
 
 
+## Reminders and confirmations
+
+
+
+
+
 ## Propagating data
 
 ### Declaring delegated attributes
+
 
 
 ## Author
