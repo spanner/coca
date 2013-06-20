@@ -8,7 +8,7 @@ Coca is highly configurable but the defaults are simple and secure. It is design
 
 Coca is naturally extensible because you can send any information you like down the chain and do whatever you like when it arrives. RBAC or some other authorization scheme is very easy to add.
 
-Coca also supports attribute propagation: your auth master is likely also to be a directory server and coca can automatically send notifications up and down the chain when attributes change. This allows you to offer a profile form on any application in the chain but hold the profile columns on only one (presumably but not necessarily the master).
+Coca also supports attribute propagation: your auth master is likely also to be a directory server and coca can help you to dry out contact (or any) attributes by passing notifications up and down the chain when they change.
 
 
 ## tl;dr
@@ -66,7 +66,7 @@ There's nothing to stop you running coca in parallel with other auth services in
 
 All the actual authentication done by devise as usual. Coca just adds a simple way to pass credentials up the chain and an auth token back down again.
 
-#todo: perhaps the auth token is overcomplicated. it could just be an equivaltnt to the session cookie that we pass back.
+<!-- #todo: perhaps the auth token is overcomplicating things. it could just be an equivaltnt to the session cookie that we pass back, so that continuing sessions just work. The token is a more general case, I suppose. -->
 
 1. A coca servant app has its own (typically devise-based) sign-in mechanism. You can set that up any way you like, and you can choose to accept credentials locally for some users.
 
@@ -143,7 +143,7 @@ The `:cocable` strategy will try token authentication and database authenticatio
 
 ### Authenticating in the master
 
-The syntax is the same as delegation, since we may also be passing auth up the chain. Here it matters which other strategies you apply because it is up to devise to authenticate against the supplied credentials. They would normally include at least database_authenticatable and token_authenticatable.
+The syntax is the same as delegation, since we may also be passing auth up the chain. Here it matters which other strategies you apply because it is up to devise to authenticate against the supplied credentials. They would normally include at least `database_authenticatable` and `token_authenticatable`.
 
     class User < ActiveRecord::Base
       devise :database_authenticatable,
@@ -165,19 +165,19 @@ To handle other resource names you need to add some routes to the coca namespace
 
 In the servant coca requires an `authentication_token` column that you may already have. All the other devise columns can be omitted unless you are supporting other strategies locally.
 
-In the master coca has no special requirements but you still need the columns that support the strategies you offer. 
+In the master coca has no special requirements but you still need the columns that support the strategies you offer, which necessarily include `:database_authenticatable` and `:token_authenticatable`.
 
 
 ## Extending Coca
 
 At heart coca is a simple remote authentication service: credentials are checked remotely and if they are found valid, user information is returned.
 
-The data package that we return on successful auth is built by calling `as_json_on_authentication` on the user model in the coca master. By default it just returns uid and auth token, but you can override that method to return any data you like. Permissions, friends lists, recent messages, password replacement instructions: anything it makes sense to centralise can be held in the master and passed down to all the servant applications.
+The data package that we return on successful auth is built by calling `serializable_hash` on the user model in the coca master. By default it just returns uid and auth token, but you can override that method to return any data you like. Permissions, friends lists, recent messages, password replacement instructions: anything it makes sense to centralise can be held in the master and passed down to all the servant applications.
 
 
 ## Reminders and confirmations
 
-
+We're going to need some routing here. Only the auth master is in a position to handle password-reminders and to sign up new users.
 
 
 
