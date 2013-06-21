@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
   s.add_dependency "jquery-rails"
   s.add_dependency "devise"
   s.add_dependency "rocket_pants"
+  s.add_dependency "signed_json"
 
   s.add_development_dependency "mysql2"
 end

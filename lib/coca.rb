@@ -1,5 +1,7 @@
 require "coca/engine"
-require "coca/link"
+require 'coca/exceptions'
+require 'coca/delegate'
+require 'coca/cookie'
 require "devise/cocable"
 
 module Coca
@@ -9,21 +11,23 @@ module Coca
                  :check_source, 
                  :require_https, 
                  :propagate_updates, 
-                 :token_ttl
+                 :token_ttl,
+                 :secret
   
   @@masters = []
   @@servants = []
-  @@cookie_domain = ""
+  @@cookie_domain = :all
   @@check_source = true
   @@require_https = true
   @@propagate_updates = false
   @@token_ttl = 1800
+  @@secret = "Unset"
   
-  def look_up
+  def delegate_to
     @@masters.push Coca::Delegate.new &block
   end
 
-  def look_down
+  def delegate_from
     @@servants.push Coca::Delegate.new &block
   end
   

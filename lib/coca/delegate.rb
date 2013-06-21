@@ -2,7 +2,8 @@ require 'resolv'
 
 module Coca
   class Delegate
-    attr_writer :host, :port, :secret, :ttl
+    include HTTParty
+    attr_writer :host, :port, :secret, :ttl, :client_class
     
     def initialise
       yield self if block_given?
@@ -20,8 +21,20 @@ module Coca
       @port ||= 80
     end
     
+    def base_uri
+      [host, port].compact.join(':')
+    end
+
+    def path
+      @path ||= "/coca/user"
+    end
+    
     def ip_address
       @ip ||= Resolv.new.getaddress(host)
+    end
+    
+    def client_class
+      @client_class ||= "Coca::Client"
     end
     
     def valid_secret?(key)
@@ -30,6 +43,15 @@ module Coca
     
     def valid_referer?(referer)
       !!referer && !referer.blank? && referer == ip_address
+    end
+    
+    def url
+      URI.join(base_uri, path)
+    end
+        
+    def authenticate!(credentials)
+      response = HTTParty.get url, :user => credentials
+      response.body if response.code != 401
     end
     
   end

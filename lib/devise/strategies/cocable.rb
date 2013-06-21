@@ -3,28 +3,34 @@ require 'devise/strategies/authenticatable'
 module Devise
   module Strategies
 
-    class Cocable < TokenAuthenticatable
-      # Try to authenticate locally. If that fails, pass on request to coca master, if any.
-      
+    class Cocable < Authenticatable
       def valid?
-        valid_for_params_auth? || valid_for_token_auth?
+        valid_for_params_auth? || cookie.valid?
       end
 
       def authenticate!
-        
-        
-        
-        resource = valid_password? && mapping.to.authenticate_with_ldap(params[scope])
-        return fail(:invalid) if resource.nil?
-
-        if validate(resource)
-          success!(resource)
-        else
-          fail(:invalid)
-        end
+        resource = mapping.to.where(:uid => cookie.uid, :authentication_token => cookie.auth_token).first || delegate!
+        return fail(:invalid_response) unless resource
+        success!(resource) if validate(resource)
       end
+      
+      def delegate!
+        response = nil
+        credentials = authentication_hash.merge(:auth_token => cookie.value)
+        Coca.masters.each do |master|
+          break if response = master.authenticate(credentials)
+        end
+        resource = mapping.to.where(:uid => response.uid).first_or_create if response
+      end
+
+    private
+
+      def cookie
+        @cookie ||= Cookie.new(cookies, scope)
+      end
+
     end
   end
 end
 
-Warden::Strategies.add(:ldap_authenticatable, Devise::Strategies::LdapAuthenticatable)
+Warden::Strategies.add(:cocable, Devise::Strategies::Cocable)
