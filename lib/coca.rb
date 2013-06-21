@@ -1,8 +1,15 @@
 require "coca/engine"
+require 'coca/logger'
 require 'coca/exceptions'
 require 'coca/delegate'
 require 'coca/cookie'
-require "devise/cocable"
+require "devise"
+require 'devise/strategies/cocable'
+
+Devise.add_module :cocable,
+                  :route => :session,
+                  :strategy => true,
+                  :controller => :sessions
 
 module Coca
   mattr_accessor :masters, 
@@ -12,7 +19,8 @@ module Coca
                  :require_https, 
                  :propagate_updates, 
                  :token_ttl,
-                 :secret
+                 :secret,
+                 :debug
   
   @@masters = []
   @@servants = []
@@ -22,6 +30,7 @@ module Coca
   @@propagate_updates = false
   @@token_ttl = 1800
   @@secret = "Unset"
+  @@debug = true
   
   def delegate_to
     @@masters.push Coca::Delegate.new &block
@@ -32,11 +41,18 @@ module Coca
   end
   
   def valid_servant?(referer, key)
-    servants.find { |servant| servant.valid_referer?(referer) && servant.valid_secret?(key) }
+    servants.find { |servant| servant.valid_referer?(referer) && valid_secret?(key) }
   end
 
   def valid_master?(referer, key)
-    masters.find { |master| master.valid_referer?(referer) && master.valid_secret?(key) }
+    masters.find { |master| master.valid_referer?(referer) && valid_secret?(key) }
+  end
+  
+protected
+
+  def valid_secret?(key)
+    !!key && !key.blank? && key == Coca.secret
   end
   
 end
+

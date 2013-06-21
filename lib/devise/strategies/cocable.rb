@@ -10,7 +10,6 @@ module Devise
 
       def authenticate!
         resource = mapping.to.where(:uid => cookie.uid, :authentication_token => cookie.auth_token).first || delegate!
-        return fail(:invalid_response) unless resource
         success!(resource) if validate(resource)
       end
       
@@ -18,7 +17,8 @@ module Devise
         response = nil
         credentials = authentication_hash.merge(:auth_token => cookie.value)
         Coca.masters.each do |master|
-          break if response = master.authenticate(credentials)
+          response = master.authenticate(credentials)
+          break if response
         end
         resource = mapping.to.where(:uid => response.uid).first_or_create if response
       end

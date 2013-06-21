@@ -1,4 +1,6 @@
-# Based on a similar class in devise-login-cookie by pda
+require 'signed_json'
+
+# Based on the same class in devise-login-cookie by pda
 
 module Coca
 
@@ -67,7 +69,6 @@ module Coca
     end
 
     def signer
-      require 'signed_json'
       @signer ||= SignedJson::Signer.new(Coca.secret)
     end
 

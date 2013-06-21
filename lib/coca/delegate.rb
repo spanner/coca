@@ -3,7 +3,7 @@ require 'resolv'
 module Coca
   class Delegate
     include HTTParty
-    attr_writer :host, :port, :secret, :ttl, :client_class
+    attr_writer :host, :port, :ttl, :client_class
     
     def initialise
       yield self if block_given?
@@ -35,10 +35,6 @@ module Coca
     
     def client_class
       @client_class ||= "Coca::Client"
-    end
-    
-    def valid_secret?(key)
-      !!key && !key.blank? && key == secret
     end
     
     def valid_referer?(referer)
