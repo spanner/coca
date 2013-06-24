@@ -1,4 +1,5 @@
 require 'resolv'
+require 'httparty'
 
 module Coca
   class Delegate

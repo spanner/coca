@@ -135,6 +135,8 @@ At heart coca is a simple remote authentication service: credentials are checked
 
 The data package that we return on successful auth is built by calling `serializable_hash` on the user model in the coca master. As a minimum it should return an auth token, but you can add any other data you like. If you have local resources that are owned by remote users, some kind of uid will be needed. Also permissions, friends lists, recent messages, password replacement instructions: anything it makes sense to hold centrally can be worked out in the master and passed down to all servant applications.
 
+Your coca response package will be treated as model attributes. It's up to you to make sure that your local user object does the right thing with whatever is passed down.
+
 
 ## Reminders and confirmations
 

@@ -32,26 +32,26 @@ module Coca
   @@secret = "Unset"
   @@debug = true
   
-  def delegate_to
-    @@masters.push Coca::Delegate.new &block
-  end
+  class << self
+    def delegate_to(&block)
+      @@masters.push Coca::Delegate.new(&block)
+    end
 
-  def delegate_from
-    @@servants.push Coca::Delegate.new &block
-  end
+    def delegate_from(&block)
+      @@servants.push Coca::Delegate.new(&block)
+    end
   
-  def valid_servant?(referer, key)
-    servants.find { |servant| servant.valid_referer?(referer) && valid_secret?(key) }
-  end
+    def valid_servant?(referer, key)
+      servants.find { |servant| servant.valid_referer?(referer) && valid_secret?(key) }
+    end
 
-  def valid_master?(referer, key)
-    masters.find { |master| master.valid_referer?(referer) && valid_secret?(key) }
-  end
+    def valid_master?(referer, key)
+      masters.find { |master| master.valid_referer?(referer) && valid_secret?(key) }
+    end
   
-protected
-
-  def valid_secret?(key)
-    !!key && !key.blank? && key == Coca.secret
+    def valid_secret?(key)
+      !!key && !key.blank? && key == Coca.secret
+    end
   end
   
 end

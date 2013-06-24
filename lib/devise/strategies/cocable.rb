@@ -20,7 +20,7 @@ module Devise
           response = master.authenticate(credentials)
           break if response
         end
-        resource = mapping.to.where(:uid => response.uid).first_or_create if response
+        resource = mapping.to.where(:uid => response.uid).first_or_create(response.except(:uid)) if response
       end
 
     private

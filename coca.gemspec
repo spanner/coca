@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.summary     = "Lightweight, simple SSO for rails."
   s.description = "Coca is a chainable, devise-based scheme for delegation of authentication. It works through a standard JSON API so the packet that you pass down on auth is completely configurable. See coca-rbac for a similarly transparent RBAC implementation."
 
-  s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
+  s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.md"]
 
   s.add_dependency "rails", "~> 3.2.13"
   s.add_dependency "jquery-rails"
