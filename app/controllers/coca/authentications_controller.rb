@@ -1,14 +1,13 @@
 module Coca
   class AuthenticationsController < ::RocketPants::Base
-    before_filter :require_valid_servant!
+    def self.helper(*args); end
+    include Devise::Controllers::Helpers
 
-    def check
-      scope = params[:scope] || 'user'
-      if warden.authenticate(:scope => params[:scope])
-        expose resource
-      else
-        head :unauthorized
-      end
+    before_filter :require_valid_servant!
+    before_filter :authenticate_user!
+
+    def show
+      expose current_user
     end
 
   protected
@@ -16,6 +15,6 @@ module Coca
     def require_valid_servant!
       Coca.valid_servant?(request.remote_ip, params[:key])
     end
-  
+    
   end
 end

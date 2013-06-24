@@ -12,6 +12,7 @@ gem 'rocket_pants'
 
 group :development, :test do 
   gem 'railroady'
+  gem 'factory_girl_rails'
 end 
 
 group :test do 
@@ -19,10 +20,11 @@ group :test do
   gem "launchy"
   gem 'faker' 
   gem "capybara"
+  gem "simplecov"
+  gem "spork"
   gem "rspec-rails"
   gem 'factory_girl_rails' 
-  gem 'guard-rspec' 
-  gem 'factory_girl_rails'
+  gem 'guard-spork' 
   gem "database_cleaner"
   gem 'shoulda-matchers'
   gem 'awesome_print'

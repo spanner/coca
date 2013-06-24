@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe User do
   before :each do
-    @user = create(:user)
+    @user = FactoryGirl.create(:user)
   end
 
   describe "created locally" do

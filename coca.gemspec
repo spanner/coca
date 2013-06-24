@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.version     = Coca::VERSION
   s.authors     = ["William Ross"]
   s.email       = ["will@spanner.org"]
-  s.homepage    = "github.com/spanner/coca"
+  s.homepage    = "https://github.com/spanner/coca"
   s.summary     = "Lightweight, simple SSO for rails."
   s.description = "Coca is a chainable, devise-based scheme for delegation of authentication. It works through a standard JSON API so the packet that you pass down on auth is completely configurable. See coca-rbac for a similarly transparent RBAC implementation."
 
@@ -22,4 +22,10 @@ Gem::Specification.new do |s|
   s.add_dependency "signed_json"
 
   s.add_development_dependency "mysql2"
+  s.add_development_dependency "rspec-rails"
+  s.add_development_dependency "factory_girl_rails"
+  s.add_development_dependency "simplecov"
+  s.add_development_dependency "database_cleaner"
+  s.add_development_dependency "factory_girl_rails"
+  s.add_development_dependency "shoulda-matchers"
 end
