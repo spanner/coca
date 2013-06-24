@@ -5,9 +5,13 @@ source "http://rubygems.org"
 # development dependencies will be added by default to the :development group.
 gemspec
 
+# for the dummy app:
+
+gem 'devise'
+gem 'rocket_pants'
+
 group :development, :test do 
-  gem 'rspec-rails' 
-  gem 'factory_girl_rails' 
+  gem 'railroady'
 end 
 
 group :test do 
@@ -16,10 +20,11 @@ group :test do
   gem 'faker' 
   gem "capybara"
   gem "rspec-rails"
+  gem 'factory_girl_rails' 
   gem 'guard-rspec' 
   gem 'factory_girl_rails'
   gem "database_cleaner"
   gem 'shoulda-matchers'
   gem 'awesome_print'
-  gem 'cucumber-rails'
+  gem 'cucumber-rails', :require => false
 end 

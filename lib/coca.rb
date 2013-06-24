@@ -4,7 +4,9 @@ require 'coca/exceptions'
 require 'coca/delegate'
 require 'coca/cookie'
 require "devise"
+require 'devise/models/cocable'
 require 'devise/strategies/cocable'
+require 'rocket_pants'
 
 Devise.add_module :cocable,
                   :route => :session,

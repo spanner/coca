@@ -5,20 +5,12 @@ class User < ActiveRecord::Base
          :token_authenticatable,
          :cocable
 
-  # Current user is pushed into here to make it available in models
-  # such as the UserActionObserver that sets ownership before save.
-  #
-  def self.current
-    Thread.current[:user]
-  end
-  def self.current=(user)
-    Thread.current[:user] = user
-  end
+  before_create :ensure_authentication_token  # provided by devise
+  before_create :ensure_uid
 
-  
   ## Coca package
   #
-  # This is returned to coca slave applications when  authentication is given here.
+  # This is returned to coca slave applications when authentication is found here.
   
   def serializable_hash(options={})
     {
@@ -28,8 +20,10 @@ class User < ActiveRecord::Base
     }
   end
   
-  def self.find_or_create_from_coca
-    
+protected
+
+  def ensure_uid
+    self.uid ||= SecureRandom.uuid
   end
-  
+
 end

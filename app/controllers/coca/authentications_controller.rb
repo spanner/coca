@@ -1,6 +1,5 @@
 module Coca
-  class AuthenticationsController < RocketPants::Base
-    respond_to :json
+  class AuthenticationsController < ::RocketPants::Base
     before_filter :require_valid_servant!
 
     def check
