@@ -14,6 +14,7 @@ Spork.prefork do
   require 'rspec/rails'
   require 'rspec/autorun'
   require 'factory_girl_rails'
+  require 'webmock/rspec'
   require 'database_cleaner'
   require 'shoulda-matchers'
   require 'awesome_print'

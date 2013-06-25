@@ -14,27 +14,27 @@
       <img src="./assets/0.7.1/loading.gif" alt="loading"/>
     </div>
     <div id="wrapper" style="display:none;">
-      <div class="timestamp">Generated <abbr class="timeago" title="2013-06-25T08:23:48+01:00">2013-06-25T08:23:48+01:00</abbr></div>
+      <div class="timestamp">Generated <abbr class="timeago" title="2013-06-25T11:42:08+01:00">2013-06-25T11:42:08+01:00</abbr></div>
       <ul class="group_tabs"></ul>
 
       <div id="content">
         <div class="file_list_container" id="AllFiles">
   <h2>
     <span class="group_name">All Files</span>
-    (<span class="covered_percent"><span class="red">73.2%</span></span>
+    (<span class="covered_percent"><span class="red">78.34%</span></span>
      covered at
      <span class="covered_strength">
-       <span class="red">
-         0.98
+       <span class="green">
+         1.15
        </span>
     </span> hits/line)
   </h2>
   <a name="AllFiles"></a>
   <div>
     <b>11</b> files in total.
-    <b>153</b> relevant lines. 
-    <span class="green"><b>112</b> lines covered</span> and
-    <span class="red"><b>41</b> lines missed </span>
+    <b>157</b> relevant lines. 
+    <span class="green"><b>123</b> lines covered</span> and
+    <span class="red"><b>34</b> lines missed </span>
   </div>
   <table class="file_list">
     <thead>
@@ -92,12 +92,12 @@
       
       <tr>
         <td class="strong"><a href="#bdf740800af1c2fdd4df54c398e6170b9f949b71" class="src_link" title="lib/coca/delegate.rb">lib/coca/delegate.rb</a></td>
-        <td class="red strong">68.97 %</td>
-        <td>55</td>
-        <td>29</td>
-        <td>20</td>
-        <td>9</td>
-        <td>1.0</td>
+        <td class="green strong">93.94 %</td>
+        <td>61</td>
+        <td>33</td>
+        <td>31</td>
+        <td>2</td>
+        <td>2.8</td>
       </tr>
       
       <tr>
@@ -337,20 +337,20 @@
           <div class="file_list_container" id="Libraries">
   <h2>
     <span class="group_name">Libraries</span>
-    (<span class="covered_percent"><span class="red">70.71%</span></span>
+    (<span class="covered_percent"><span class="red">76.39%</span></span>
      covered at
      <span class="covered_strength">
-       <span class="red">
-         0.87
+       <span class="green">
+         1.07
        </span>
     </span> hits/line)
   </h2>
   <a name="Libraries"></a>
   <div>
     <b>9</b> files in total.
-    <b>140</b> relevant lines. 
-    <span class="green"><b>99</b> lines covered</span> and
-    <span class="red"><b>41</b> lines missed </span>
+    <b>144</b> relevant lines. 
+    <span class="green"><b>110</b> lines covered</span> and
+    <span class="red"><b>34</b> lines missed </span>
   </div>
   <table class="file_list">
     <thead>
@@ -388,12 +388,12 @@
       
       <tr>
         <td class="strong"><a href="#bdf740800af1c2fdd4df54c398e6170b9f949b71" class="src_link" title="lib/coca/delegate.rb">lib/coca/delegate.rb</a></td>
-        <td class="red strong">68.97 %</td>
-        <td>55</td>
-        <td>29</td>
-        <td>20</td>
-        <td>9</td>
-        <td>1.0</td>
+        <td class="green strong">93.94 %</td>
+        <td>61</td>
+        <td>33</td>
+        <td>31</td>
+        <td>2</td>
+        <td>2.8</td>
       </tr>
       
       <tr>
@@ -1549,11 +1549,11 @@
         <div class="source_table" id="bdf740800af1c2fdd4df54c398e6170b9f949b71">
   <div class="header">
     <h3>lib/coca/delegate.rb</h3>
-    <h4><span class="red">68.97 %</span> covered</h4>
+    <h4><span class="green">93.94 %</span> covered</h4>
     <div>
-      <b>29</b> relevant lines. 
-      <span class="green"><b>20</b> lines covered</span> and
-      <span class="red"><b>9</b> lines missed.</span>
+      <b>33</b> relevant lines. 
+      <span class="green"><b>31</b> lines covered</span> and
+      <span class="red"><b>2</b> lines missed.</span>
     </div>
   </div>
   
@@ -1599,7 +1599,7 @@
         <li class="covered" data-hits="1" data-linenumber="7">
           <span class="hits">1</span>
           
-          <code class="ruby">    attr_writer :host, :port, :ttl, :client_class</code>
+          <code class="ruby">    attr_writer :host, :port, :ttl, :protocol</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="8">
@@ -1638,8 +1638,8 @@
           <code class="ruby">    def ttl</code>
         </li>
       
-        <li class="missed" data-hits="0" data-linenumber="14">
-          
+        <li class="covered" data-hits="1" data-linenumber="14">
+          <span class="hits">1</span>
           
           <code class="ruby">      @ttl ||= Coca.token_ttl</code>
         </li>
@@ -1662,8 +1662,8 @@
           <code class="ruby">    def host</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="18">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="10" data-linenumber="18">
+          <span class="hits">10</span>
           
           <code class="ruby">      @host ||= &quot;localhost&quot;</code>
         </li>
@@ -1686,10 +1686,10 @@
           <code class="ruby">    def port</code>
         </li>
       
-        <li class="missed" data-hits="0" data-linenumber="22">
+        <li class="covered" data-hits="8" data-linenumber="22">
+          <span class="hits">8</span>
           
-          
-          <code class="ruby">      @port ||= 80</code>
+          <code class="ruby">      @port</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="23">
@@ -1707,13 +1707,13 @@
         <li class="covered" data-hits="1" data-linenumber="25">
           <span class="hits">1</span>
           
-          <code class="ruby">    def base_uri</code>
+          <code class="ruby">    def protocol</code>
         </li>
       
-        <li class="missed" data-hits="0" data-linenumber="26">
+        <li class="covered" data-hits="7" data-linenumber="26">
+          <span class="hits">7</span>
           
-          
-          <code class="ruby">      [host, port].compact.join(':')</code>
+          <code class="ruby">      @protocol ||= 'https'</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="27">
@@ -1725,19 +1725,19 @@
         <li class="never" data-hits="" data-linenumber="28">
           
           
-          <code class="ruby"></code>
+          <code class="ruby">    </code>
         </li>
       
         <li class="covered" data-hits="1" data-linenumber="29">
           <span class="hits">1</span>
           
-          <code class="ruby">    def path</code>
+          <code class="ruby">    def base_uri</code>
         </li>
       
         <li class="missed" data-hits="0" data-linenumber="30">
           
           
-          <code class="ruby">      @path ||= &quot;/coca/user&quot;</code>
+          <code class="ruby">      [host, port].compact.join(':')</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="31">
@@ -1749,19 +1749,19 @@
         <li class="never" data-hits="" data-linenumber="32">
           
           
-          <code class="ruby">    </code>
+          <code class="ruby"></code>
         </li>
       
         <li class="covered" data-hits="1" data-linenumber="33">
           <span class="hits">1</span>
           
-          <code class="ruby">    def ip_address</code>
+          <code class="ruby">    def path</code>
         </li>
       
-        <li class="covered" data-hits="5" data-linenumber="34">
-          <span class="hits">5</span>
+        <li class="covered" data-hits="7" data-linenumber="34">
+          <span class="hits">7</span>
           
-          <code class="ruby">      @ip ||= Resolv.new.getaddress(host)</code>
+          <code class="ruby">      @path ||= &quot;/coca/user&quot;</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="35">
@@ -1779,13 +1779,13 @@
         <li class="covered" data-hits="1" data-linenumber="37">
           <span class="hits">1</span>
           
-          <code class="ruby">    def client_class</code>
+          <code class="ruby">    def ip_address</code>
         </li>
       
-        <li class="missed" data-hits="0" data-linenumber="38">
+        <li class="covered" data-hits="8" data-linenumber="38">
+          <span class="hits">8</span>
           
-          
-          <code class="ruby">      @client_class ||= &quot;Coca::Client&quot;</code>
+          <code class="ruby">      @ip ||= Resolv.new.getaddress(host)</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="39">
@@ -1806,8 +1806,8 @@
           <code class="ruby">    def valid_referer?(referer)</code>
         </li>
       
-        <li class="covered" data-hits="5" data-linenumber="42">
-          <span class="hits">5</span>
+        <li class="covered" data-hits="7" data-linenumber="42">
+          <span class="hits">7</span>
           
           <code class="ruby">      !!referer &amp;&amp; !referer.blank? &amp;&amp; referer == ip_address</code>
         </li>
@@ -1827,64 +1827,100 @@
         <li class="covered" data-hits="1" data-linenumber="45">
           <span class="hits">1</span>
           
-          <code class="ruby">    def url</code>
+          <code class="ruby">    def host_url_with_port</code>
         </li>
       
-        <li class="missed" data-hits="0" data-linenumber="46">
+        <li class="covered" data-hits="6" data-linenumber="46">
+          <span class="hits">6</span>
           
-          
-          <code class="ruby">      URI.join(base_uri, path)</code>
+          <code class="ruby">      hup = &quot;#{protocol}://#{host}&quot;</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="47">
+        <li class="covered" data-hits="6" data-linenumber="47">
+          <span class="hits">6</span>
+          
+          <code class="ruby">      hup &lt;&lt; &quot;:#{port}&quot; if port</code>
+        </li>
+      
+        <li class="covered" data-hits="6" data-linenumber="48">
+          <span class="hits">6</span>
+          
+          <code class="ruby">      hup</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="49">
           
           
           <code class="ruby">    end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="48">
-          
-          
-          <code class="ruby">        </code>
-        </li>
-      
-        <li class="covered" data-hits="1" data-linenumber="49">
-          <span class="hits">1</span>
-          
-          <code class="ruby">    def authenticate!(credentials)</code>
-        </li>
-      
-        <li class="missed" data-hits="0" data-linenumber="50">
-          
-          
-          <code class="ruby">      response = HTTParty.get url, :user =&gt; credentials</code>
-        </li>
-      
-        <li class="missed" data-hits="0" data-linenumber="51">
-          
-          
-          <code class="ruby">      response.body if response.code != 401</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="52">
-          
-          
-          <code class="ruby">    end</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="53">
+        <li class="never" data-hits="" data-linenumber="50">
           
           
           <code class="ruby">    </code>
         </li>
       
+        <li class="covered" data-hits="1" data-linenumber="51">
+          <span class="hits">1</span>
+          
+          <code class="ruby">    def url</code>
+        </li>
+      
+        <li class="covered" data-hits="6" data-linenumber="52">
+          <span class="hits">6</span>
+          
+          <code class="ruby">      URI.join(host_url_with_port, path).to_s</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="53">
+          
+          
+          <code class="ruby">    end</code>
+        </li>
+      
         <li class="never" data-hits="" data-linenumber="54">
+          
+          
+          <code class="ruby">        </code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="55">
+          <span class="hits">1</span>
+          
+          <code class="ruby">    def authenticate(credentials)</code>
+        </li>
+      
+        <li class="covered" data-hits="2" data-linenumber="56">
+          <span class="hits">2</span>
+          
+          <code class="ruby">      response = HTTParty.get url, :user =&gt; credentials</code>
+        </li>
+      
+        <li class="covered" data-hits="2" data-linenumber="57">
+          <span class="hits">2</span>
+          
+          <code class="ruby">      response.body if response.code != 401</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="58">
+          
+          
+          <code class="ruby">    end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="59">
+          
+          
+          <code class="ruby">    </code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="60">
           
           
           <code class="ruby">  end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="55">
+        <li class="never" data-hits="" data-linenumber="61">
           
           
           <code class="ruby">end</code>

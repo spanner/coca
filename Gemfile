@@ -27,6 +27,6 @@ group :test do
   gem 'guard-spork' 
   gem "database_cleaner"
   gem 'shoulda-matchers'
+  gem 'webmock'
   gem 'awesome_print'
-  gem 'cucumber-rails', :require => false
 end 

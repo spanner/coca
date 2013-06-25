@@ -8,4 +8,14 @@ FactoryGirl.define do
     after(:build) { |u| u.password_confirmation = u.password = "testy" }
   end
 
+  factory :delegate, :class => Coca::Delegate do
+    host 'test.spanner.org'
+    
+    trait :specified do
+      port '1234'
+      ttl 3600
+    end
+
+  end
+
 end
