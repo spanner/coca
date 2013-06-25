@@ -1,5 +1,4 @@
 FactoryGirl.define do
-  p "defining user factory"
   
   factory :user do
     sequence(:name) { |n| "User #{n}" }
@@ -8,6 +7,5 @@ FactoryGirl.define do
     authentication_token "amigo!"
     after(:build) { |u| u.password_confirmation = u.password = "testy" }
   end
-
 
 end

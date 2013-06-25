@@ -3,7 +3,6 @@ require 'coca/logger'
 require 'coca/exceptions'
 require 'coca/delegate'
 require 'coca/cookie'
-# require 'coca/failure'
 require 'devise/models/cocable'
 require 'devise/strategies/cocable'
 

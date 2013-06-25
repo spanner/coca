@@ -2,16 +2,20 @@ require "spec_helper"
 
 describe Coca::AuthenticationsController do
   default_version 1
+  # before :each do
+  #   Coca.stub(:valid_servant? => true)
+  # end
 
-  before :each do
-    @user = create(:user)
-  end
+  # NB. we're not testing authentication here: only the controller responses in different auth scenarios.
+  # The only place auth is actually tested is in the request specs.
+  
+  describe "Responding to auth checks" do
 
-  describe "Authenticating a user" do
-
-    describe "with a valid email/password pair" do
+    describe "with an authenticated user" do
       before :each do
-        get :show, :version => 1, :scope => "user", :user => {:email => @user.email, :password => 'testy'}
+        @user = create(:user)
+        authenticate(@user)
+        get :show, :version => 1, :scope => "user"
       end
       
       it 'should return a success code' do
@@ -32,63 +36,18 @@ describe Coca::AuthenticationsController do
       
     end
     
-    # describe "with an invalid email/password pair" do
-    #   before :each do
-    #     get :show, :version => 1, :user => {:email => @user.email, :password => 'not_testy'}
-    #   end
-    #   
-    #   describe "and no upstream authentication" do
-    #     before do
-    #       # stub upstream auth call and return 401
-    #     end
-    #     it "should return an invalid code"
-    #   end
-    #   
-    #   describe "confirmed by upstream authentication" do
-    #     before do
-    #       # stub upstream auth call and return 401
-    #     end
-    #     it 'should return a success code'
-    #     it 'should be the right sort of resource'
-    #     it 'should create a local user'
-    #   end
-    # 
-    # end
-    # 
-    # describe "with a valid authentication token" do
-    #   before :each do
-    #     get :show, :version => 1, :user => {:authentication_token => 'amigo!'}
-    #   end
-    #   
-    #   it 'should return a success code' do
-    #     response.should be_successful
-    #   end
-    # 
-    #   it 'should be json' do
-    #     response.content_type.should == 'application/json'
-    #   end
-    # 
-    #   it 'should be the right sort of resource' do
-    #     response.should be_singular_resource
-    #   end
-    # 
-    #   it "should return the user package" do
-    #     response.should have_exposed @user
-    #   end
-    #   
-    # end
-    # 
-    # describe "with an invalid authentication token" do
-    #   before :each do
-    #     get :show, :version => 1, :user => {:authentication_token => 'Yes sir, I can boogie'}
-    #   end
-    #   
-    #   describe "and no upstream authentication" do
-    #     it "should return an invalid code"
-    #   end
-    #   
-    # end
+    describe "without an authenticated user" do
+      before :each do
+        authenticate(nil)
+        get :show, :version => 1, :scope => "user"  
+      end
+      
+      it "should return an invalid code" do
+        response.should_not be_successful
+        response.response_code.should == 401
+      end
 
+    end
   end
 
 end
