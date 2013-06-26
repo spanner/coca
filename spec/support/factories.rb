@@ -1,21 +1,23 @@
 FactoryGirl.define do
   
   factory :user do
-    sequence(:name) { |n| "User #{n}" }
     sequence(:email) { |n| "user#{n}@spanner.org" }
     uid { SecureRandom.uuid }
-    authentication_token "amigo!"
-    after(:build) { |u| u.password_confirmation = u.password = "testy" }
+    
+    factory :local_user do
+      sequence(:name) { |n| "User #{n}" }
+      authentication_token "local_token"
+      after(:build) { |u| u.password_confirmation = u.password = "testy" }
+    end
+
+    factory :remote_user do
+      sequence(:name) { |n| "Remote User #{n}" }
+      authentication_token "remote_token"
+    end
   end
 
   factory :delegate, :class => Coca::Delegate do
     host 'test.spanner.org'
-    
-    trait :specified do
-      port '1234'
-      ttl 3600
-    end
-
   end
 
 end

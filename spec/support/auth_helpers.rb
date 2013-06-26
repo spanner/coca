@@ -1,4 +1,5 @@
 module AuthHelpers
+  # for controller tests:
 
   def authenticate(user)
     if user

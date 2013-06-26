@@ -1,11 +1,12 @@
 class User < ActiveRecord::Base
 
-  attr_accessible :uid, :authentication_token, :email, :password, :password_confirmation, :permissions
+  attr_accessible :uid, :authentication_token, :name, :email, :password, :password_confirmation, :permissions
+
   devise :database_authenticatable,
          :token_authenticatable,
          :cocable
 
-  before_create :ensure_authentication_token  # provided by devise
+  before_create :ensure_authentication_token
   before_create :ensure_uid
 
   ## Coca package

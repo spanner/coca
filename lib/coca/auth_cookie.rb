@@ -1,10 +1,11 @@
 require 'signed_json'
 
 # Based on the same class in devise-login-cookie by pda
+# https://github.com/pda/devise-login-cookie
 
 module Coca
 
-  class Cookie
+  class AuthCookie
 
     def initialize(cookies, scope)
       @cookies = cookies
@@ -20,9 +21,8 @@ module Coca
     def unset
       @cookies.delete cookie_name, cookie_options
     end
-
-    # The uid of the resource (e.g. User) referenced in the cookie.
-    def uid
+    
+    def token
       value[0]
     end
 
@@ -60,7 +60,7 @@ module Coca
     end
 
     def encoded_value(resource)
-      signer.encode [ resource.id, Time.now.to_i ]
+      signer.encode [ resource.authentication_token, Time.now.to_i ]
     end
 
     def cookie_options

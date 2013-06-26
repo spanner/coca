@@ -20,11 +20,11 @@ describe Coca::Delegate do
     end
 
     it "should have the default path" do
-      @delegate.path.should == '/coca/user'
+      @delegate.path.should == '/coca/1/check'
     end
 
     it "should concatenate the correct url" do
-      @delegate.url.to_s.should == "https://test.spanner.org/coca/user"
+      @delegate.url.to_s.should == "https://test.spanner.org/coca/1/check"
     end
     
     describe "with port setting" do
@@ -33,7 +33,7 @@ describe Coca::Delegate do
       end
       
       it "should build the correct url" do
-        @delegate.url.to_s.should == "https://test.spanner.org:8080/coca/user"
+        @delegate.url.to_s.should == "https://test.spanner.org:8080/coca/1/check"
       end
     end
   end
@@ -74,7 +74,7 @@ describe Coca::Delegate do
       end
       
       it "should return the confirmation package" do
-        @delegate.authenticate(@credentials).should == @confirmation_package
+        @delegate.authenticate(:user, @credentials).should == @confirmation_package
       end
     end
     
@@ -84,7 +84,7 @@ describe Coca::Delegate do
       end
       
       it "should return nil" do
-        @delegate.authenticate(@credentials).should be_nil
+        @delegate.authenticate(:user, @credentials).should be_nil
       end
     end
     

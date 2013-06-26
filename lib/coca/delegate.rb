@@ -6,7 +6,7 @@ module Coca
     include HTTParty
     attr_writer :host, :port, :ttl, :protocol
     
-    def initialise
+    def initialize
       yield self if block_given?
     end
 
@@ -31,7 +31,7 @@ module Coca
     end
 
     def path
-      @path ||= "/coca/user"
+      @path ||= "/coca/1/check"
     end
     
     def ip_address
@@ -52,8 +52,8 @@ module Coca
       URI.join(host_url_with_port, path).to_s
     end
         
-    def authenticate(credentials)
-      response = HTTParty.get url, :user => credentials
+    def authenticate(scope, credentials)
+      response = HTTParty.get url, :scope => scope, :"#{scope}" => credentials
       response.body if response.code != 401
     end
     

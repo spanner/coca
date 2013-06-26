@@ -31,6 +31,7 @@ Spork.prefork do
     config.include RocketPants::RSpecMatchers, :type => :controller
     config.include FactoryGirl::Syntax::Methods
     config.include Devise::TestHelpers, :type => :controller
+    config.include Warden::Test::Helpers
     config.include AuthHelpers, :type => :controller
 
     # ## Mock Framework
@@ -57,6 +58,7 @@ Spork.prefork do
     end
     config.after(:each) do
       DatabaseCleaner.clean
+      Warden.test_reset!
     end
 
     # If true, the base class of anonymous controllers will be inferred

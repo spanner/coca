@@ -1,10 +1,11 @@
 require "spec_helper"
+include Warden::Test::Helpers  
 
 describe Coca::AuthenticationsController do
   default_version 1
-  # before :each do
-  #   Coca.stub(:valid_servant? => true)
-  # end
+  before :each do
+    Coca.stub(:valid_servant?).and_return(true)
+  end
 
   # NB. we're not testing authentication here: only the controller responses in different auth scenarios.
   # The only place auth is actually tested is in the request specs.
