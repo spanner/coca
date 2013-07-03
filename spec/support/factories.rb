@@ -17,6 +17,7 @@ FactoryGirl.define do
   end
 
   factory :delegate, :class => Coca::Delegate do
+    sequence(:name) { |n| "Delegate #{n}" }
     host 'test.spanner.org'
   end
 

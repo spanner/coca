@@ -6,8 +6,7 @@ module Coca
     before_filter :allow_params_authentication!
 
     def show
-      scope = params[:scope].to_sym      
-      if user = warden.authenticate(:scope => scope)
+      if scope = params[:scope].to_sym && user = warden.authenticate(:scope => scope)
         expose user
       else
         head :unauthorized

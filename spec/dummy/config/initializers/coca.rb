@@ -1,9 +1,9 @@
 Coca.secret = "Desperado"
 
-Coca.delegate_to do |master|
+Coca.add_master "Master" do |master|
   master.host = "master.spanner.org"
 end
 
-Coca.delegate_from do |servant|
+Coca.add_servant "Servant" do |servant|
   servant.host = "servant.spanner.org"
 end

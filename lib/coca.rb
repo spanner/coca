@@ -15,13 +15,14 @@ end
 module Coca
   mattr_accessor :masters, 
                  :servants, 
-                 :cookie_domain, 
-                 :check_source, 
-                 :require_https, 
-                 :propagate_updates, 
+                 :cookie_domain,
+                 :check_source,
+                 :require_https,
+                 :propagate_updates,
                  :token_ttl,
                  :secret,
-                 :debug
+                 :debug,
+                 :check_referers
   
   @@masters = []
   @@servants = []
@@ -32,14 +33,15 @@ module Coca
   @@token_ttl = 1800
   @@secret = "Unset"
   @@debug = true
+  @@check_referers = false
   
   class << self
-    def delegate_to(&block)
-      @@masters.push Coca::Delegate.new(&block)
+    def add_master(name, &block)
+      @@masters.push Coca::Delegate.new(name, &block)
     end
 
-    def delegate_from(&block)
-      @@servants.push Coca::Delegate.new(&block)
+    def add_servant(name, &block)
+      @@servants.push Coca::Delegate.new(name, &block)
     end
   
     def valid_servant?(referer, key)
@@ -53,8 +55,12 @@ module Coca
     def valid_secret?(key)
       !!key && !key.blank? && key == Coca.secret
     end
+    
+    def check_referers?
+      Rails.env.producation? && !!@@check_referers
+    end
+    
   end
-  
 end
 
 Devise.add_module :cocable,

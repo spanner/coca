@@ -4,12 +4,17 @@ require 'httparty'
 module Coca
   class Delegate
     include HTTParty
-    attr_writer :host, :port, :ttl, :protocol
+    attr_writer :name, :host, :port, :ttl, :protocol
     
-    def initialize
+    def initialize(name='')
+      @name = name
       yield self if block_given?
     end
-
+    
+    def name
+      @name
+    end
+    
     def ttl
       @ttl ||= Coca.token_ttl
     end
@@ -39,7 +44,11 @@ module Coca
     end
     
     def valid_referer?(referer)
-      !!referer && !referer.blank? && referer == ip_address
+      if Coca.check_referers?
+        !!referer && !referer.blank? && referer == ip_address
+      else
+        true
+      end
     end
     
     def host_url_with_port
@@ -49,12 +58,12 @@ module Coca
     end
     
     def url
-      URI.join(host_url_with_port, path).to_s
+      @url ||= URI.join(host_url_with_port, path).to_s
     end
         
     def authenticate(scope, credentials)
-      response = HTTParty.get url, :scope => scope, :"#{scope}" => credentials
-      response.body if response.code != 401
+      response = HTTParty.post url, :body => {:scope => scope, :"#{scope}" => credentials}
+      response if response.code == 200
     end
     
   end

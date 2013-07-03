@@ -11,7 +11,7 @@ module Devise
 
     class Cocable < Authenticatable
       def valid?
-        valid_for_params_auth? || cookie.valid?
+        valid_for_params_auth? || valid_for_cookie_auth?
       end
 
       def authenticate!
@@ -19,26 +19,30 @@ module Devise
         response = nil
         
         if authentication_hash
-          response = delegate(authentication_hash)
+          response = delegate(authentication_hash.merge(:password => password))
         else
           response = delegate({:auth_token => cookie.token})
         end
         
         if response
-          resource = mapping.to.where(:uid => response[:uid]).first_or_create
-          resource.update_attributes(response.except(:uid))
+          # coincidentally, rocket_pants likes to store a rest object under :response
+          user_data = response["response"]
+          user_data.symbolize_keys!
+          resource = mapping.to.where(:uid => user_data[:uid]).first_or_create
+          resource.update_attributes(user_data.except(:uid))
         end
-        
-        success!(resource) if resource# && validate(resource)
+        success!(resource) if resource && resource.persisted?
       end
       
       def delegate(credentials)
-        response = nil
+        rocket_package = nil
         Coca.masters.each do |master|
-          response = master.authenticate(scope, credentials)
-          break if response
+          rocket_package = master.authenticate(scope, credentials)
+          break if rocket_package
         end
-        response
+        # Rocket_pants passes the main REST object the :response value
+        # which leaves us with this bit of dodgy unpacking
+        rocket_package.parsed_response
       end
 
     private
@@ -47,6 +51,10 @@ module Devise
       #
       def cookie
         @cookie ||= Coca::AuthCookie.new(cookies, scope)
+      end
+      
+      def valid_for_cookie_auth?
+        cookie.valid?
       end
 
     end
