@@ -29,9 +29,14 @@ module Devise
           user_data = response["response"]
           user_data.symbolize_keys!
           resource = mapping.to.where(:uid => user_data[:uid]).first_or_create
-          resource.update_attributes(user_data.except(:uid))
+          resource.assign_attributes(user_data.except(:uid))
+          if resource.active_for_authentication?
+            resource.save!
+            success!(resource)
+          else
+            fail!(:coca_invalid)
+          end
         end
-        success!(resource) if resource && resource.persisted?
       end
       
       def delegate(credentials)
@@ -40,8 +45,6 @@ module Devise
           rocket_package = master.authenticate(scope, credentials)
           break if rocket_package
         end
-        # Rocket_pants passes the main REST object the :response value
-        # which leaves us with this bit of dodgy unpacking
         rocket_package.parsed_response
       end
 
