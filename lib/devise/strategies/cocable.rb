@@ -40,9 +40,12 @@ module Devise
           rocket_package = master.authenticate(scope, credentials)
           break if rocket_package
         end
-        # Rocket_pants passes the main REST object the :response value
-        # which leaves us with this bit of dodgy unpacking
-        rocket_package.parsed_response
+        
+        if rocket_package
+          # Rocket_pants passes the main REST object the :response value
+          # which leaves us with this bit of dodgy unpacking
+          rocket_package.parsed_response
+        end
       end
 
     private

@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>config/routes.rb</string>
+	<string>lib/devise/strategies/cocable.rb</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -21,6 +21,20 @@
 	<integer>265</integer>
 	<key>metaData</key>
 	<dict>
+		<key>app/controllers/coca/authentications_controller.rb</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>26</integer>
+				<key>line</key>
+				<integer>11</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
 		<key>coca.gemspec</key>
 		<dict>
 			<key>caret</key>
@@ -28,7 +42,7 @@
 				<key>column</key>
 				<integer>33</integer>
 				<key>line</key>
-				<integer>18</integer>
+				<integer>20</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
@@ -40,24 +54,71 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>0</integer>
+				<integer>10</integer>
 				<key>line</key>
-				<integer>2</integer>
+				<integer>3</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
 			<integer>0</integer>
 		</dict>
+		<key>lib/coca/delegate.rb</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>64</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>4</integer>
+		</dict>
+		<key>lib/devise/strategies/cocable.rb</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>16</integer>
+				<key>line</key>
+				<integer>36</integer>
+			</dict>
+			<key>columnSelection</key>
+			<false/>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+			<key>selectFrom</key>
+			<dict>
+				<key>column</key>
+				<integer>10</integer>
+				<key>line</key>
+				<integer>36</integer>
+			</dict>
+			<key>selectTo</key>
+			<dict>
+				<key>column</key>
+				<integer>18</integer>
+				<key>line</key>
+				<integer>36</integer>
+			</dict>
+		</dict>
 	</dict>
 	<key>openDocuments</key>
 	<array>
 		<string>coca.gemspec</string>
 		<string>config/routes.rb</string>
+		<string>app/controllers/coca/authentications_controller.rb</string>
+		<string>lib/devise/strategies/cocable.rb</string>
+		<string>lib/coca/delegate.rb</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
 	<true/>
 	<key>windowFrame</key>
-	<string>{{459, 109}, {1125, 1127}}</string>
+	<string>{{164, 203}, {1125, 1127}}</string>
 </dict>
 </plist>
