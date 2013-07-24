@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>lib/devise/strategies/cocable.rb</string>
+	<string>coca.gemspec</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -119,6 +119,6 @@
 	<key>showFileHierarchyDrawer</key>
 	<true/>
 	<key>windowFrame</key>
-	<string>{{164, 203}, {1125, 1127}}</string>
+	<string>{{96, 240}, {1125, 1127}}</string>
 </dict>
 </plist>
