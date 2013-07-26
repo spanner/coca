@@ -7,9 +7,7 @@ gemspec
 
 # for the dummy app:
 
-gem 'devise'
-gem 'rocket_pants'
-gem 'awesome_print'
+gem 'jquery-rails'
 
 group :development, :test do 
   gem 'railroady'
@@ -29,4 +27,5 @@ group :test do
   gem "database_cleaner"
   gem 'shoulda-matchers'
   gem 'webmock'
+  gem 'awesome_print'
 end 
