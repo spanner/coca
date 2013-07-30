@@ -31,6 +31,11 @@ module Coca
       valid? ? Time.at(value[1]) : nil
     end
 
+    # Whether the cookie is within the specified age range.
+    def alive?
+      created_at && created_at > (Time.now - Coca.ttl)
+    end
+
     # Whether the cookie appears valid.
     def valid?
       present? && value.all?

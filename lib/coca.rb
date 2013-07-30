@@ -19,7 +19,7 @@ module Coca
                  :check_source,
                  :require_https,
                  :propagate_updates,
-                 :token_ttl,
+                 :ttl,
                  :secret,
                  :debug,
                  :check_referers
@@ -30,7 +30,7 @@ module Coca
   @@check_source = true
   @@require_https = true
   @@propagate_updates = false
-  @@token_ttl = 1800
+  @@ttl = 10.minutes
   @@secret = "Unset"
   @@debug = true
   @@check_referers = false

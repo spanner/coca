@@ -18,40 +18,30 @@ module Devise
         resource = nil
         response = nil
         
-        Rails.logger.warn ">>> Cocable.authenticate!"
+        # 1. there is an auth cookie, it's still valid and we recognise the auth_token it contains
+        # The ttl is really a cache parameter: a cookie less old than that we can just accept. 10.minutes is normal.
         
-        # 1. there is an auth cookie and we recognise the auth_token it contains
-        
-        if cookie && resource = mapping.to.find_for_token_authentication(:auth_token => cookie.token).first
-          Rails.logger.warn ">>> got local user from cookie!"
+        if cookie.alive? && resource = mapping.to.find_for_token_authentication(:auth_token => cookie.token)
           success!(resource)
         
         # 2. there is an email/password login hash that we can pass up to coca masters
         
         elsif authentication_hash
-          Rails.logger.warn ">>> got login request: delegating!"
           response = delegate(authentication_hash.merge(:password => password))
         
         # 3. There is an auth cookie whose token we don't recognise but can pass up to coca masters
         elsif cookie.token
-          Rails.logger.warn ">>> got auth_token: delegating!"
           response = delegate({:auth_token => cookie.token})
-
-        else
-          Rails.logger.warn ">>> Nothing to do here!"
         end
         
         if response
-          Rails.logger.warn ">>> got delegation response: #{response.inspect}"
           # coincidentally, rocket_pants likes to store a rest object under :response
           user_data = response["response"]
           user_data.symbolize_keys!
           resource = mapping.to.where(:uid => user_data[:uid]).first_or_create
           resource.update_attributes(user_data.except(:uid))
-          Rails.logger.warn ">>> setting cookie for: #{resource.inspect}"
-          cookie.set(resource)
-          Rails.logger.warn ">>> cookie: #{cookie.inspect}"
           success!(resource) if resource && resource.persisted?
+          # Cookie-setting (and deleting) is handled by a post-signin warden hook defined in coca.rb
         end
       end
       
