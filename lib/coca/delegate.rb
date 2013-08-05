@@ -36,7 +36,7 @@ module Coca
     end
 
     def path
-      @path ||= "/coca/1/check"
+      @path ||= "/coca/check"
     end
     
     def ip_address

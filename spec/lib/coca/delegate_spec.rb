@@ -20,11 +20,11 @@ describe Coca::Delegate do
     end
 
     it "should have the default path" do
-      @delegate.path.should == '/coca/1/check'
+      @delegate.path.should == '/coca/check'
     end
 
     it "should concatenate the correct url" do
-      @delegate.url.to_s.should == "https://test.spanner.org/coca/1/check"
+      @delegate.url.to_s.should == "https://test.spanner.org/coca/check"
     end
     
     describe "with port setting" do
@@ -33,7 +33,7 @@ describe Coca::Delegate do
       end
       
       it "should build the correct url" do
-        @delegate.url.to_s.should == "https://test.spanner.org:8080/coca/1/check"
+        @delegate.url.to_s.should == "https://test.spanner.org:8080/coca/check"
       end
     end
   end

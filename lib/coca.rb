@@ -1,5 +1,7 @@
+require "coca/monkeys"
 require "coca/engine"
 require 'coca/delegate'
+require 'coca/json'
 require 'coca/auth_cookie'
 require 'devise/models/cocable'
 require 'devise/strategies/cocable'

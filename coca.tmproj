@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>lib/coca/auth_cookie.rb</string>
+	<string>lib/coca/delegate.rb</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -29,20 +29,6 @@
 				<integer>0</integer>
 				<key>line</key>
 				<integer>30</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>0</integer>
-		</dict>
-		<key>app/controllers/coca/authentications_controller.rb</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>26</integer>
-				<key>line</key>
-				<integer>11</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
@@ -82,9 +68,9 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>28</integer>
+				<integer>3</integer>
 				<key>line</key>
-				<integer>59</integer>
+				<integer>8</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
@@ -96,9 +82,9 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>8</integer>
+				<integer>59</integer>
 				<key>line</key>
-				<integer>24</integer>
+				<integer>33</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
@@ -117,7 +103,21 @@
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>4</integer>
+			<integer>0</integer>
+		</dict>
+		<key>lib/coca/engine.rb</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>1</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
 		</dict>
 		<key>lib/coca/version.rb</key>
 		<dict>
@@ -138,30 +138,14 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>16</integer>
+				<integer>28</integer>
 				<key>line</key>
-				<integer>36</integer>
+				<integer>48</integer>
 			</dict>
-			<key>columnSelection</key>
-			<false/>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
 			<integer>0</integer>
-			<key>selectFrom</key>
-			<dict>
-				<key>column</key>
-				<integer>10</integer>
-				<key>line</key>
-				<integer>36</integer>
-			</dict>
-			<key>selectTo</key>
-			<dict>
-				<key>column</key>
-				<integer>18</integer>
-				<key>line</key>
-				<integer>36</integer>
-			</dict>
 		</dict>
 	</dict>
 	<key>openDocuments</key>
@@ -171,14 +155,14 @@
 		<string>lib/coca/version.rb</string>
 		<string>Gemfile</string>
 		<string>config/routes.rb</string>
-		<string>app/controllers/coca/authentications_controller.rb</string>
 		<string>lib/devise/strategies/cocable.rb</string>
+		<string>lib/coca/engine.rb</string>
 		<string>lib/coca/auth_cookie.rb</string>
 		<string>lib/coca/delegate.rb</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
 	<true/>
 	<key>windowFrame</key>
-	<string>{{262, 64}, {1125, 1127}}</string>
+	<string>{{430, 46}, {1232, 1291}}</string>
 </dict>
 </plist>

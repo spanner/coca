@@ -37,11 +37,11 @@ module Devise
         if response
           # coincidentally, rocket_pants likes to store a rest object under :response
           user_data = response["response"]
-          user_data.symbolize_keys!
-          resource = mapping.to.where(:uid => user_data[:uid]).first_or_create
-          resource.update_attributes(user_data.except(:uid))
+          resource = mapping.to.where(:uid => user_data['uid']).first_or_create
+          updated_columns = (user_data.except('uid') & mapping.to.column_names).symbolize_keys
+          resource.update_attributes(updated_columns)
           success!(resource) if resource && resource.persisted?
-          # Cookie-setting (and deleting) is handled by a post-signin warden hook defined in coca.rb
+          # Cookie-setting (and deleting) is handled by warden post-hooks defined in coca.rb
         end
       end
       

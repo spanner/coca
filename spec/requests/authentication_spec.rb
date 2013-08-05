@@ -6,7 +6,7 @@ describe "Coca authenticating" do
     @ip = '1.1.1.1'
     @resolver.stub(:getaddress).and_return(@ip)
     Resolv.stub(:new).and_return(@resolver)
-    stub_request(:get, "https://master.spanner.org/coca/1/check").to_return(:status => [401, "Unauthorized"])
+    stub_request(:get, "https://master.spanner.org/coca/check").to_return(:status => [401, "Unauthorized"])
   end
 
   describe "a local user by email and password" do
@@ -54,7 +54,7 @@ describe "Coca authenticating" do
     before :each do
       @remote_user = build(:remote_user)
       @confirmation_package = @remote_user.serializable_hash
-      stub_request(:get, "https://master.spanner.org/coca/1/check").to_return(:status => 200, :body => @confirmation_package)
+      stub_request(:get, "https://master.spanner.org/coca/check").to_return(:status => 200, :body => @confirmation_package)
       get coca_check_url(:version => 1, :scope => 'user', :user => {:email => @remote_user.email, :password => "testy"}), 'HTTP_REFERER' => 'servant.spanner.org'
     end
     
