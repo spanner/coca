@@ -4,14 +4,7 @@ require 'coca/delegate'
 require 'coca/auth_cookie'
 require 'devise/models/cocable'
 require 'devise/strategies/cocable'
-
-Warden::Manager.after_set_user do |user, warden, options|
-  Coca::AuthCookie.new(warden.cookies, options[:scope]).set(user)
-end
-
-Warden::Manager.before_logout do |user, warden, options|
-  Coca::AuthCookie.new(warden.cookies, options[:scope]).unset
-end
+require 'devise/hooks/cocable'
 
 module Coca
   mattr_accessor :masters, 
@@ -72,4 +65,5 @@ end
 Devise.add_module :cocable,
                   :route => :session,
                   :strategy => true,
-                  :controller => :sessions
+                  :controller => :sessions,
+                  :model => true

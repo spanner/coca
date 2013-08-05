@@ -13,14 +13,7 @@
         1,
         1,
         1,
-        null,
         1,
-        10,
-        null,
-        null,
-        1,
-        0,
-        null,
         null,
         1,
         1,
@@ -79,6 +72,7 @@
         null,
         null,
         1,
+        null,
         null,
         null,
         null
@@ -286,12 +280,13 @@
         1,
         22,
         22,
+        22,
+        22,
         null,
         0,
         null,
         null,
         null,
-        1,
         1,
         1,
         null,
@@ -302,6 +297,7 @@
         null
       ],
       "/Users/will/www/gems/coca/lib/devise/strategies/cocable.rb": [
+        1,
         1,
         null,
         1,
@@ -375,6 +371,15 @@
         null,
         1
       ],
+      "/Users/will/www/gems/coca/lib/devise/hooks/cocable.rb": [
+        1,
+        10,
+        null,
+        null,
+        1,
+        0,
+        null
+      ],
       "/Users/will/www/gems/coca/app/controllers/coca/authentications_controller.rb": [
         1,
         1,
@@ -393,7 +398,9 @@
         1,
         15,
         13,
+        13,
         null,
+        2,
         2,
         null,
         null,
@@ -413,6 +420,6 @@
         null
       ]
     },
-    "timestamp": 1375723526
+    "timestamp": 1375733069
   }
 }

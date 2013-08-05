@@ -26,12 +26,11 @@ module Devise
         end
       end
 
-      def self.included(base)
-        base.class_eval {
-          alias_method_chain :to_json, :signature
-        }
+      included do
+        alias_method_chain :to_json, :signature
       end
 
     end
   end
 end
+

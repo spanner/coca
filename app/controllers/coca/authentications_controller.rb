@@ -13,7 +13,7 @@ module Coca
     before_filter :allow_params_authentication!
 
     def show
-      if scope = params[:scope].to_sym && @user = warden.authenticate(:scope => scope)
+      if (scope = params[:scope].to_sym) && (@user = warden.authenticate(:scope => scope))
         render :text => @user.to_json(:purpose => :coca)
       else
         head :unauthorized

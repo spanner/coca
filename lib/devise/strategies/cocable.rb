@@ -1,4 +1,5 @@
 require 'devise/strategies/authenticatable'
+require 'devise/models/cocable'
 
 module Devise
   module Strategies
