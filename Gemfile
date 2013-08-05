@@ -12,6 +12,7 @@ gem 'jquery-rails'
 group :development, :test do 
   gem 'railroady'
   gem 'factory_girl_rails'
+  gem 'awesome_print'
 end 
 
 group :test do 
@@ -22,10 +23,10 @@ group :test do
   gem "simplecov"
   gem "spork"
   gem "rspec-rails"
+  gem 'json_spec'
   gem 'factory_girl_rails' 
   gem 'guard-spork' 
   gem "database_cleaner"
   gem 'shoulda-matchers'
   gem 'webmock'
-  gem 'awesome_print'
 end 

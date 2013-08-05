@@ -35,8 +35,7 @@ module Devise
         end
         
         if response
-          # coincidentally, rocket_pants likes to store a rest object under :response
-          user_data = response["response"]
+          user_data = response
           resource = mapping.to.where(:uid => user_data['uid']).first_or_create
           updated_columns = (user_data.except('uid') & mapping.to.column_names).symbolize_keys
           resource.update_attributes(updated_columns)
@@ -46,17 +45,12 @@ module Devise
       end
       
       def delegate(credentials)
-        rocket_package = nil
+        package = nil
         Coca.masters.each do |master|
-          rocket_package = master.authenticate(scope, credentials)
-          break if rocket_package
+          package = master.authenticate(scope, credentials)
+          break if package
         end
-        
-        if rocket_package
-          # Rocket_pants passes the main REST object as a :response value
-          # which leaves us with this bit of dodgy unpacking
-          rocket_package.parsed_response
-        end
+        Coca.signer.decode(package) if package
       end
 
     private

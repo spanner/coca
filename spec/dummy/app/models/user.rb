@@ -1,7 +1,5 @@
 class User < ActiveRecord::Base
 
-  attr_accessible :uid, :authentication_token, :name, :email, :password, :password_confirmation, :permissions
-
   devise :database_authenticatable,
          :token_authenticatable,
          :cocable
@@ -13,14 +11,14 @@ class User < ActiveRecord::Base
   #
   # This is returned to coca slave applications when authentication is found here.
   
-  def serializable_hash(options={})
+  def as_json_for_coca(options={})
     {
       uid: uid,
       name: name,
       authentication_token: authentication_token
     }
   end
-  
+
 protected
 
   def ensure_uid

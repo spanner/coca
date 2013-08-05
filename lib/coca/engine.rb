@@ -1,5 +1,4 @@
 require 'devise'
-require 'rocket_pants'
 
 module Coca
   class Engine < ::Rails::Engine
@@ -11,6 +10,6 @@ module Coca
       g.assets false
       g.helper false
     end
-    
+
   end
 end

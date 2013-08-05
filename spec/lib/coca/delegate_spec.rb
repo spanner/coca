@@ -16,15 +16,15 @@ describe Coca::Delegate do
     end
 
     it "should have the default ttl" do
-      @delegate.ttl.should == 1800
+      @delegate.ttl.should == 600
     end
 
     it "should have the default path" do
-      @delegate.path.should == '/coca/check'
+      @delegate.path.should == '/coca/check.json'
     end
 
     it "should concatenate the correct url" do
-      @delegate.url.to_s.should == "https://test.spanner.org/coca/check"
+      @delegate.url.to_s.should == "https://test.spanner.org/coca/check.json"
     end
     
     describe "with port setting" do
@@ -33,7 +33,7 @@ describe Coca::Delegate do
       end
       
       it "should build the correct url" do
-        @delegate.url.to_s.should == "https://test.spanner.org:8080/coca/check"
+        @delegate.url.to_s.should == "https://test.spanner.org:8080/coca/check.json"
       end
     end
   end
@@ -41,11 +41,12 @@ describe Coca::Delegate do
 
   describe "checking delegation" do
     before :each do
+      Coca.check_referers = true
       @delegate = build(:delegate)
       @resolver = double('resolver')
       @ip = '1.1.1.1'
-      Resolv.should_receive(:new).and_return(@resolver)
-      @resolver.should_receive(:getaddress).and_return(@ip)
+      Resolv.stub(:new).and_return(@resolver)
+      @resolver.stub(:getaddress).and_return(@ip)
     end
     
     it "should work out its ip address" do
@@ -61,26 +62,45 @@ describe Coca::Delegate do
     end
   end
 
+  describe "not checking delegation" do
+    before :each do
+      Coca.check_referers = false
+      @delegate = build(:delegate)
+      @resolver = double('resolver')
+      @ip = '1.1.1.1'
+      Resolv.stub(:new).and_return(@resolver)
+      @resolver.stub(:getaddress).and_return(@ip)
+    end
+    
+    it "should respond positively to a matching ip address" do
+      @delegate.valid_referer?('1.1.1.1').should be_true
+    end
+    
+    it "should respond positively to a non-matching ip address" do
+      @delegate.valid_referer?('1.2.3.4').should be_true
+    end
+  end
+
   describe "delegating" do
     before :each do
       @delegate = build(:delegate)
-      @user = create(:user)
-      @confirmation_package = @user.serializable_hash
+      @user = create(:remote_user)
+      @confirmation_package = @user.to_json(:purpose => :coca)
     end
       
     describe "successfully" do
       before :each do
-        stub_request(:get, @delegate.url.to_s).to_return(:status => 200, :body => @confirmation_package)
+        stub_request(:post, @delegate.url.to_s).to_return(:status => 200, :body => @confirmation_package)
       end
       
       it "should return the confirmation package" do
-        @delegate.authenticate(:user, @credentials).should == @confirmation_package
+        @delegate.authenticate(:user, @credentials).should be_json_eql(@confirmation_package)
       end
     end
     
     describe "unsuccessfully" do 
       before :each do
-        stub_request(:get, @delegate.url.to_s).to_return(:status => [401, "Unauthorized"])
+        stub_request(:post, @delegate.url.to_s).to_return(:status => [401, "Unauthorized"])
       end
       
       it "should return nil" do

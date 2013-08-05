@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency "rails", "~> 4.0.0"
   s.add_dependency "devise", "~> 3.0.0"
+  s.add_dependency "httparty"
   s.add_dependency "signed_json"
 
   s.add_development_dependency "mysql2"
@@ -26,4 +27,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "database_cleaner"
   s.add_development_dependency "factory_girl_rails"
   s.add_development_dependency "shoulda-matchers"
+  s.add_development_dependency "json_spec"
 end

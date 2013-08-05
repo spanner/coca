@@ -16,7 +16,7 @@ module Coca
     end
     
     def ttl
-      @ttl ||= Coca.token_ttl
+      @ttl ||= Coca.ttl
     end
     
     def host
@@ -36,7 +36,7 @@ module Coca
     end
 
     def path
-      @path ||= "/coca/check"
+      @path ||= "/coca/check.json"
     end
     
     def ip_address
@@ -63,7 +63,7 @@ module Coca
         
     def authenticate(scope, credentials)
       response = HTTParty.post url, :body => {:scope => scope, :"#{scope}" => credentials}
-      response if response.code == 200
+      response.body if response.code == 200
     end
     
   end

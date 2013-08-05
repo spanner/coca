@@ -2,13 +2,29 @@ require "spec_helper"
 
 describe "Authentication" do
 
-  it "routes arbitrary scopes" do
-    {:get => "/coca/check"}.should route_to(
+  it "routes without scope" do
+    {:post => "/coca/check.json"}.should route_to(
       :controller => "coca/authentications",
       :action => "show",
-      :version => "1",
       :format => "json"
     )
-
   end
+
+  it "routes with scope" do
+    {:post => "/coca/check/thing.json"}.should route_to(
+      :controller => "coca/authentications",
+      :action => "show",
+      :format => "json",
+      :scope => "thing"
+    )
+  end
+  
+  it "defaults to json" do
+    {:post => "/coca/check"}.should route_to(
+      :controller => "coca/authentications",
+      :action => "show",
+      :format => "json"
+    )
+  end
+  
 end

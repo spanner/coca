@@ -54,7 +54,7 @@ module Coca
 
     def value
       begin
-        @value = signer.decode @cookies[cookie_name]
+        @value = Coca.signer.decode @cookies[cookie_name]
       rescue SignedJson::Error
         [nil, nil]
       end
@@ -65,16 +65,12 @@ module Coca
     end
 
     def encoded_value(resource)
-      signer.encode [ resource.authentication_token, Time.now.to_i ]
+      Coca.signer.encode [ resource.authentication_token, Time.now.to_i ]
     end
 
     def cookie_options
       @session_options ||= Rails.configuration.session_options
       @session_options.slice(:path, :secure, :httponly).merge(:domain => Coca.cookie_domain)
-    end
-
-    def signer
-      @signer ||= SignedJson::Signer.new(Coca.secret)
     end
 
   end

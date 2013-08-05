@@ -2,7 +2,6 @@ require "spec_helper"
 include Warden::Test::Helpers  
 
 describe Coca::AuthenticationsController do
-  default_version 1
   before :each do
     Coca.stub(:valid_servant?).and_return(true)
   end
@@ -14,9 +13,9 @@ describe Coca::AuthenticationsController do
 
     describe "with an authenticated user" do
       before :each do
-        @user = create(:user)
+        @user = create(:local_user)
         authenticate(@user)
-        get :show, :version => 1, :scope => "user"
+        get :show, :scope => "user", :format => :json
       end
       
       it 'should return a success code' do
@@ -27,20 +26,15 @@ describe Coca::AuthenticationsController do
         response.content_type.should == 'application/json'
       end
 
-      it 'should be the right sort of resource' do
-        response.should be_singular_resource
+      it 'should be the right resource' do
+        response.body.should == @user.to_json(:purpose => :coca)
       end
-
-      it "should return the user package" do
-        response.should have_exposed @user
-      end
-      
     end
     
     describe "without an authenticated user" do
       before :each do
         authenticate(nil)
-        get :show, :version => 1, :scope => "user"  
+        get :show, :scope => "user", :format => :json 
       end
       
       it "should return an invalid code" do

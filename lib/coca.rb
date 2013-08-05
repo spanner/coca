@@ -1,7 +1,6 @@
 require "coca/monkeys"
 require "coca/engine"
 require 'coca/delegate'
-require 'coca/json'
 require 'coca/auth_cookie'
 require 'devise/models/cocable'
 require 'devise/strategies/cocable'
@@ -59,7 +58,12 @@ module Coca
     end
     
     def check_referers?
-      Rails.env.producation? && !!@@check_referers
+      !!@@check_referers
+    end
+    
+    def signer
+      Rails.logger.warn "You are strongly advised to set a secret in initializers/coca/rb." if secret == 'unset'
+      @signer ||= SignedJson::Signer.new(secret)
     end
     
   end
