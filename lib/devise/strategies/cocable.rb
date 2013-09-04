@@ -11,6 +11,10 @@ module Devise
     # (If the credentials matched locally, we wouldn't usually get to this strategy)
 
     class Cocable < Authenticatable
+      def logger
+        ::Rails.logger
+      end
+      
       def valid?
         valid_for_params_auth? || valid_for_cookie_auth?
       end
