@@ -28,27 +28,32 @@ module Devise
         # 2. there is an email/password login hash that we can pass up to coca masters
         
         elsif authentication_hash
+          logger.debug "[Coca] authenticating hash with masters" if logger
           response = delegate(authentication_hash.merge(:password => password))
         
         # 3. There is an auth cookie whose token we don't recognise but can pass up to coca masters
         elsif cookie.token
+          logger.debug "[Coca] authenticating token with masters" if logger
           response = delegate({:auth_token => cookie.token})
         end
         
         if response
           user_data = response
+          logger.debug "[Coca] user data: #{user_data.inspect})" if logger
           resource = mapping.to.where(:uid => user_data['uid']).first_or_create
           updated_columns = (user_data.except('uid') & mapping.to.column_names).symbolize_keys
           resource.update_attributes(updated_columns)
+          logger.debug "[Coca] updated resource #{resource.id})" if logger
           success!(resource) if resource && resource.persisted?
-          # Cookie-setting (and deleting) is handled by warden post-hooks defined in coca.rb
         end
       end
       
       def delegate(credentials)
         package = nil
         Coca.masters.each do |master|
+          logger.debug "[Coca] authenticating master #{master.name} (#{master.url})" if logger
           package = master.authenticate(scope, credentials)
+          logger.debug "     -> #{package.inspect}" if logger
           break if package
         end
         Coca.signer.decode(package) if package
