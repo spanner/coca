@@ -32,13 +32,15 @@ module Devise
         # 2. there is an email/password login hash that we can pass up to coca masters
         
         elsif authentication_hash
-          logger.debug "[Coca] authenticating hash with masters" if logger
-          response = delegate(authentication_hash.merge(:password => password))
+          credentials = authentication_hash.merge(:password => password)
+          logger.debug "[Coca] authenticating hash #{credentials.inspect}" if logger
+          response = delegate(credentials)
         
         # 3. There is an auth cookie whose token we don't recognise but can pass up to coca masters
         elsif cookie.token
-          logger.debug "[Coca] authenticating token with masters" if logger
-          response = delegate({:auth_token => cookie.token})
+          credentials = {:auth_token => cookie.token}
+          logger.debug "[Coca] authenticating token '#{cookie.token}' with masters" if logger
+          response = delegate(credentials)
         end
         
         if response
@@ -49,13 +51,15 @@ module Devise
           resource.update_attributes(updated_columns)
           logger.debug "[Coca] updated resource #{resource.id})" if logger
           success!(resource) if resource && resource.persisted?
+        else
+          logger.debug "[Coca] no response" if logger
         end
       end
       
       def delegate(credentials)
         package = nil
         Coca.masters.each do |master|
-          logger.debug "[Coca] authenticating master #{master.name} (#{master.url})" if logger
+          logger.debug "[Coca] authenticating with master #{master.name} (#{master.url})" if logger
           package = master.authenticate(scope, credentials)
           logger.debug "     -> #{package.inspect}" if logger
           break if package
