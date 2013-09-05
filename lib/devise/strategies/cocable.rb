@@ -46,13 +46,23 @@ module Devise
         if response
           user_data = response
           logger.debug "[Coca] user data: #{user_data.inspect})" if logger
+
           resource = mapping.to.where(:uid => user_data['uid']).first_or_create
+          logger.debug "[Coca] Local resource: #{resource.inspect}" if logger
+
           updated_columns = (user_data.except('uid') & mapping.to.column_names).symbolize_keys
-          resource.update_attributes(updated_columns)
-          logger.debug "[Coca] updated resource #{resource.id})" if logger
-          success!(resource) if resource && resource.persisted?
+          logger.debug "[Coca] Updating columns: #{updated_columns.inspect}" if logger
+          
+          if resource.update_attributes(updated_columns)
+            resource.confirm! if resource.respond_to :confirm! && !resource.confirmed?
+            success!(resource)
+            logger.debug "[Coca] Local resource saved, user signed in" if logger
+          else
+            logger.debug "[Coca] User could not be saved. Errors: #{resource.errors.to_a.inspect}" if logger
+          end
+            
         else
-          logger.debug "[Coca] no response" if logger
+          logger.debug "[Coca] Not authenticated" if logger
         end
       end
       
