@@ -54,7 +54,7 @@ module Devise
           logger.debug "[Coca] Updating columns: #{updated_columns.inspect}" if logger
           
           if resource.update_attributes(updated_columns)
-            resource.confirm! if resource.respond_to :confirm! && !resource.confirmed?
+            resource.confirm! if resource.respond_to?(:confirm!) && !resource.confirmed?
             success!(resource)
             logger.debug "[Coca] Local resource saved, user signed in" if logger
           else
