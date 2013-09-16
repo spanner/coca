@@ -47,7 +47,7 @@ module Devise
           user_data = response
           logger.debug "[Coca] user data: #{user_data.inspect})" if logger
 
-          resource = mapping.to.where(:uid => user_data['uid']).first_or_create
+          resource = mapping.to.where(:uid => user_data['uid']).first || mapping.to.where(:email => user_data['email']).first || mapping.to.new(:uid => user_data['uid'])
           logger.debug "[Coca] Local resource: #{resource.inspect}" if logger
 
           updated_columns = (user_data.except('uid') & mapping.to.column_names).symbolize_keys
