@@ -1,4 +1,4 @@
-require 'devise/strategies/authenticatable'
+require 'devise/strategies/token_authenticatable'
 require 'devise/models/cocable'
 
 module Devise
@@ -10,65 +10,76 @@ module Devise
     #
     # (If the credentials matched locally, we wouldn't usually get to this strategy)
 
-    class Cocable < Authenticatable
+    class Cocable < TokenAuthenticatable
       
       def valid?
-        valid_for_params_auth? || valid_for_cookie_auth?
+        # Coca isn't really a strategy: it delegates the whole process. We don't have an opinion about
+        # what parameters should be supplied.
+        valid_for_params_auth? || valid_for_http_auth? || valid_for_token_auth? || valid_for_cookie_auth?
+      end
+
+      # At the moment we only take token auth over http.
+      #
+      def valid_for_http_auth?
+        http_authenticatable? && request.authorization && with_authentication_hash(:token_auth, token_auth_hash)
       end
 
       def authenticate!
         resource = nil
         response = nil
         
+        Coca.log "[Coca] authenticating"
+        
         # 1. there is an auth cookie, it's still valid and we recognise the auth_token it contains
         # The ttl is really a cache parameter: a cookie less old than that we can just accept. 10.minutes is normal.
         
         if cookie.alive? && resource = mapping.to.find_for_token_authentication(:auth_token => cookie.token)
+          Coca.log "[Coca] cookie match: #{cookie.token} -> #{resource.inspect}"
           success!(resource)
         
         # 2. there is an email/password login hash that we can pass up to coca masters
         
         elsif authentication_hash
           credentials = authentication_hash.merge(:password => password)
-          Coca.debug "[Coca] authenticating hash #{credentials.inspect}"
+          Coca.log "[Coca] authenticating hash #{credentials.inspect}"
           response = delegate(credentials)
         
         # 3. There is an auth cookie whose token we don't recognise but can pass up to coca masters
         elsif cookie.token
           credentials = {:auth_token => cookie.token}
-          Coca.debug "[Coca] authenticating token '#{cookie.token}' with masters"
+          Coca.log "[Coca] authenticating token '#{cookie.token}' with masters"
           response = delegate(credentials)
         end
         
         if response
           user_data = response
-          Coca.debug "[Coca] user data: #{user_data.inspect})"
+          Coca.log "[Coca] user data: #{user_data.inspect})"
 
           resource = mapping.to.where(:uid => user_data['uid']).first || mapping.to.where(:email => user_data['email']).first || mapping.to.new(:uid => user_data['uid'])
-          logger.debug "[Coca] Local resource: #{resource.inspect}" if logger
+          Coca.log "[Coca] Local resource: #{resource.inspect}"
 
           updated_columns = (user_data.except('uid') & mapping.to.column_names).symbolize_keys
-          Coca.debug "[Coca] Updating columns: #{updated_columns.inspect}"
+          Coca.log "[Coca] Updating columns: #{updated_columns.inspect}"
           
           if resource.update_attributes(updated_columns)
             resource.confirm! if resource.respond_to?(:confirm!) && !resource.confirmed?
             success!(resource)
-            Coca.debug "[Coca] Local resource saved, user signed in"
+            Coca.log "[Coca] Local resource saved, user signed in"
           else
-            Coca.debug "[Coca] User could not be saved. Errors: #{resource.errors.to_a.inspect}"
+            Coca.log "[Coca] User could not be saved. Errors: #{resource.errors.to_a.inspect}"
           end
             
         else
-          Coca.debug "[Coca] Not authenticated"
+          Coca.log "[Coca] Not authenticated"
         end
       end
       
       def delegate(credentials)
         package = nil
         Coca.masters.each do |master|
-          Coca.debug "[Coca] authenticating with master #{master.name} (#{master.url})"
+          Coca.log "[Coca] authenticating with master #{master.name} (#{master.url})"
           package = master.authenticate(scope, credentials)
-          Coca.debug "     -> #{package.inspect}"
+          Coca.log "     -> #{package.inspect}"
           break if package
         end
         Coca.signer.decode(package) if package

@@ -67,8 +67,8 @@ module Coca
       ::Rails.logger
     end
     
-    def debug(message)
-      logger.warn(message) if logger && Coca.debug?
+    def log(message)
+      logger.warn(message) if logger && debug?
     end
     
   end
