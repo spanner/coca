@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>lib/devise/strategies/cocable.rb</string>
+	<string>README.md</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -29,6 +29,34 @@
 				<integer>0</integer>
 				<key>line</key>
 				<integer>30</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
+		<key>README.md</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>22</integer>
+				<key>line</key>
+				<integer>25</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
+		<key>Rakefile</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>0</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
@@ -142,12 +170,14 @@
 		<string>Gemfile</string>
 		<string>config/routes.rb</string>
 		<string>lib/devise/strategies/cocable.rb</string>
+		<string>Rakefile</string>
+		<string>README.md</string>
 		<string>lib/coca/engine.rb</string>
 		<string>lib/coca/auth_cookie.rb</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
 	<true/>
 	<key>windowFrame</key>
-	<string>{{327, 94}, {1232, 1291}}</string>
+	<string>{{50, 0}, {1122, 878}}</string>
 </dict>
 </plist>

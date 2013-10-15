@@ -11,9 +11,6 @@ module Devise
     # (If the credentials matched locally, we wouldn't usually get to this strategy)
 
     class Cocable < Authenticatable
-      def logger
-        ::Rails.logger
-      end
       
       def valid?
         valid_for_params_auth? || valid_for_cookie_auth?
@@ -33,45 +30,45 @@ module Devise
         
         elsif authentication_hash
           credentials = authentication_hash.merge(:password => password)
-          logger.debug "[Coca] authenticating hash #{credentials.inspect}" if logger
+          Coca.debug "[Coca] authenticating hash #{credentials.inspect}"
           response = delegate(credentials)
         
         # 3. There is an auth cookie whose token we don't recognise but can pass up to coca masters
         elsif cookie.token
           credentials = {:auth_token => cookie.token}
-          logger.debug "[Coca] authenticating token '#{cookie.token}' with masters" if logger
+          Coca.debug "[Coca] authenticating token '#{cookie.token}' with masters"
           response = delegate(credentials)
         end
         
         if response
           user_data = response
-          logger.debug "[Coca] user data: #{user_data.inspect})" if logger
+          Coca.debug "[Coca] user data: #{user_data.inspect})"
 
           resource = mapping.to.where(:uid => user_data['uid']).first_or_create
-          logger.debug "[Coca] Local resource: #{resource.inspect}" if logger
+          Coca.debug "[Coca] Local resource: #{resource.inspect}"
 
           updated_columns = (user_data.except('uid') & mapping.to.column_names).symbolize_keys
-          logger.debug "[Coca] Updating columns: #{updated_columns.inspect}" if logger
+          Coca.debug "[Coca] Updating columns: #{updated_columns.inspect}"
           
           if resource.update_attributes(updated_columns)
             resource.confirm! if resource.respond_to?(:confirm!) && !resource.confirmed?
             success!(resource)
-            logger.debug "[Coca] Local resource saved, user signed in" if logger
+            Coca.debug "[Coca] Local resource saved, user signed in"
           else
-            logger.debug "[Coca] User could not be saved. Errors: #{resource.errors.to_a.inspect}" if logger
+            Coca.debug "[Coca] User could not be saved. Errors: #{resource.errors.to_a.inspect}"
           end
             
         else
-          logger.debug "[Coca] Not authenticated" if logger
+          Coca.debug "[Coca] Not authenticated"
         end
       end
       
       def delegate(credentials)
         package = nil
         Coca.masters.each do |master|
-          logger.debug "[Coca] authenticating with master #{master.name} (#{master.url})" if logger
+          Coca.debug "[Coca] authenticating with master #{master.name} (#{master.url})"
           package = master.authenticate(scope, credentials)
-          logger.debug "     -> #{package.inspect}" if logger
+          Coca.debug "     -> #{package.inspect}"
           break if package
         end
         Coca.signer.decode(package) if package

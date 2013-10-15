@@ -59,6 +59,18 @@ module Coca
       @signer ||= SignedJson::Signer.new(secret)
     end
     
+    def debug?
+      !!debug
+    end
+    
+    def logger
+      ::Rails.logger
+    end
+    
+    def debug(message)
+      logger.warn(message) if logger && Coca.debug?
+    end
+    
   end
 end
 
