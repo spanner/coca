@@ -6,7 +6,7 @@ module Coca
 
     rescue_from "SignedJson::SignatureError", :with => :unauthorized
 
-    # Check that request is coming up the coca chaing
+    # Check that request is coming up the coca chain
     before_filter :require_valid_servant!
 
     # Act like a devise SessionController.
@@ -24,6 +24,9 @@ module Coca
       head :unauthorized
     end
     
+    def devise_controller?
+      true
+    end
 
   protected
 

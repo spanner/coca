@@ -1,12 +1,18 @@
 require "coca/monkeys"
 require "coca/engine"
 require 'coca/delegate'
-require 'coca/auth_cookie'
-require 'devise/models/cocable'
-require 'devise/strategies/cocable'
 require 'devise/hooks/cocable'
 
+module Devise
+  module Strategies
+    autoload :Cocable, 'devise/strategies/cocable'
+  end
+end
+
 module Coca
+  autoload :AuthCookie, 'coca/auth_cookie'
+  autoload :Delegate, 'coca/delegate'
+
   mattr_accessor :masters, 
                  :servants, 
                  :cookie_domain,
@@ -55,7 +61,7 @@ module Coca
     end
     
     def signer
-      Rails.logger.warn "You are strongly advised to set a secret in initializers/coca/rb." if secret == 'unset'
+      logger.warn "You are advised to set a secret in initializers/coca/rb." if secret == 'unset'
       @signer ||= SignedJson::Signer.new(secret)
     end
     

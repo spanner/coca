@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>README.md</string>
+	<string>lib/devise/strategies/cocable.rb</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -63,6 +63,20 @@
 			<key>firstVisibleLine</key>
 			<integer>0</integer>
 		</dict>
+		<key>app/controllers/coca/authentications_controller.rb</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>18</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
 		<key>coca.gemspec</key>
 		<dict>
 			<key>caret</key>
@@ -96,14 +110,14 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>3</integer>
+				<integer>12</integer>
 				<key>line</key>
-				<integer>8</integer>
+				<integer>57</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>0</integer>
+			<integer>31</integer>
 		</dict>
 		<key>lib/coca/auth_cookie.rb</key>
 		<dict>
@@ -152,19 +166,20 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>64</integer>
+				<integer>29</integer>
 				<key>line</key>
-				<integer>56</integer>
+				<integer>17</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>1</integer>
+			<integer>0</integer>
 		</dict>
 	</dict>
 	<key>openDocuments</key>
 	<array>
 		<string>coca.gemspec</string>
+		<string>app/controllers/coca/authentications_controller.rb</string>
 		<string>lib/coca.rb</string>
 		<string>lib/coca/version.rb</string>
 		<string>Gemfile</string>
@@ -178,6 +193,6 @@
 	<key>showFileHierarchyDrawer</key>
 	<true/>
 	<key>windowFrame</key>
-	<string>{{1008, 85}, {1232, 1291}}</string>
+	<string>{{1036, 2}, {1196, 1186}}</string>
 </dict>
 </plist>

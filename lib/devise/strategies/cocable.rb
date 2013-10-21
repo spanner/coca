@@ -15,7 +15,7 @@ module Devise
       def valid?
         # Coca isn't really a strategy: it delegates the whole process. We don't have an opinion about
         # what parameters should be supplied.
-        valid_for_params_auth? || valid_for_http_auth? || valid_for_token_auth? || valid_for_cookie_auth?
+        Coca.masters.any? && valid_for_params_auth? || valid_for_http_auth? || valid_for_token_auth? || valid_for_cookie_auth?
       end
 
       # At the moment we only take token auth over http.
