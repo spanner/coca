@@ -74,7 +74,7 @@ module Coca
     end
     
     def log(message)
-      logger.warn(message) if logger && debug?
+      logger.warn("[Coca] #{message}") if logger && debug?
     end
     
   end

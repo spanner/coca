@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>lib/devise/strategies/cocable.rb</string>
+	<string>lib/coca/engine.rb</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -40,9 +40,9 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>22</integer>
+				<integer>157</integer>
 				<key>line</key>
-				<integer>25</integer>
+				<integer>10</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
@@ -68,9 +68,9 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>0</integer>
+				<integer>10</integer>
 				<key>line</key>
-				<integer>18</integer>
+				<integer>27</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
@@ -110,23 +110,23 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>12</integer>
+				<integer>26</integer>
 				<key>line</key>
-				<integer>57</integer>
+				<integer>63</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>31</integer>
+			<integer>4</integer>
 		</dict>
-		<key>lib/coca/auth_cookie.rb</key>
+		<key>lib/coca/delegate.rb</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>28</integer>
+				<integer>0</integer>
 				<key>line</key>
-				<integer>40</integer>
+				<integer>64</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
@@ -140,7 +140,21 @@
 				<key>column</key>
 				<integer>0</integer>
 				<key>line</key>
-				<integer>1</integer>
+				<integer>15</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
+		<key>lib/coca/monkeys.rb</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>4</integer>
+				<key>line</key>
+				<integer>2</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
@@ -180,6 +194,9 @@
 	<array>
 		<string>coca.gemspec</string>
 		<string>app/controllers/coca/authentications_controller.rb</string>
+		<string>lib/coca/delegate.rb</string>
+		<string>lib/coca/monkeys.rb</string>
+		<string>lib/coca/engine.rb</string>
 		<string>lib/coca.rb</string>
 		<string>lib/coca/version.rb</string>
 		<string>Gemfile</string>
@@ -187,12 +204,10 @@
 		<string>lib/devise/strategies/cocable.rb</string>
 		<string>Rakefile</string>
 		<string>README.md</string>
-		<string>lib/coca/engine.rb</string>
-		<string>lib/coca/auth_cookie.rb</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
 	<true/>
 	<key>windowFrame</key>
-	<string>{{1036, 2}, {1196, 1186}}</string>
+	<string>{{1024, 50}, {1196, 1186}}</string>
 </dict>
 </plist>
