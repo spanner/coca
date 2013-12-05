@@ -61,7 +61,7 @@ module Coca
     end
 
     def cookie_name
-      :"coca_#{@scope}_token"
+      :"#{@scope}_coca_token"
     end
 
     def encoded_value(resource)
